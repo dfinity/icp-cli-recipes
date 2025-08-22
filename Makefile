@@ -33,10 +33,13 @@ release-recipes:
 	@for recipe in $$(ls recipes/); do \
 		echo "Creating tag for $$recipe: $$recipe-$(VERSION_TAG)"; \
 		git tag -a "$$recipe-$(VERSION_TAG)" -m "Release $$recipe recipe $(VERSION_TAG)"; \
+		echo "Creating/updating latest tag for $$recipe: $$recipe-latest"; \
+		git tag -a "$$recipe-latest" -m "Latest $$recipe recipe ($(VERSION_TAG))" -f; \
 	done
 	@echo "Pushing all recipe tags..."
 	@for recipe in $$(ls recipes/); do \
 		git push origin "$$recipe-$(VERSION_TAG)"; \
+		git push origin "$$recipe-latest" -f; \
 	done
 	@echo "All recipe release tags created! GitHub Actions will build and publish the releases."
 
@@ -58,5 +61,8 @@ release-recipe:
 	fi
 	@echo "Creating $(RECIPE) recipe release tag: $(RECIPE)-$(VERSION_TAG)"
 	git tag -a $(RECIPE)-$(VERSION_TAG) -m "Release $(RECIPE) recipe $(VERSION_TAG)"
+	@echo "Creating/updating latest tag: $(RECIPE)-latest"
+	git tag -a $(RECIPE)-latest -m "Latest $(RECIPE) recipe ($(VERSION_TAG))" -f
 	git push origin $(RECIPE)-$(VERSION_TAG)
-	@echo "Release tag created! GitHub Actions will build and publish the release."
+	git push origin $(RECIPE)-latest -f
+	@echo "Release tags created! GitHub Actions will build and publish the releases."

@@ -7,6 +7,10 @@ on:
       - "motoko-v*"
       - "assets-v*"
       - "prebuilt-v*"
+      - "rust-latest"
+      - "motoko-latest"
+      - "assets-latest"
+      - "prebuilt-latest"
 
 permissions:
   contents: write
@@ -24,8 +28,17 @@ jobs:
           TAG=${GITHUB_REF#refs/tags/}
           RECIPE=$(echo $TAG | cut -d'-' -f1)
           VERSION=$(echo $TAG | cut -d'-' -f2-)
-          echo "recipe=$RECIPE" >> $GITHUB_OUTPUT
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+          # Handle latest tags specially
+          if [[ "$VERSION" == "latest" ]]; then
+            echo "recipe=$RECIPE" >> $GITHUB_OUTPUT
+            echo "version=latest" >> $GITHUB_OUTPUT
+            echo "is_latest=true" >> $GITHUB_OUTPUT
+          else
+            echo "recipe=$RECIPE" >> $GITHUB_OUTPUT
+            echo "version=$VERSION" >> $GITHUB_OUTPUT
+            echo "is_latest=false" >> $GITHUB_OUTPUT
+          fi
 
       - name: Package Recipe
         run: |
