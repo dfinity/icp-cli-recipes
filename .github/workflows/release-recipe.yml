@@ -33,7 +33,6 @@ jobs:
 
           # Copy individual recipe files
           cp recipes/${{ steps.tag_info.outputs.recipe }}/recipe.hbs release/
-          cp recipes/${{ steps.tag_info.outputs.recipe }}/README.md release/
 
           # Create archives
           tar -czf release/${{ steps.tag_info.outputs.recipe }}-${{ steps.tag_info.outputs.version }}.tar.gz recipes/${{ steps.tag_info.outputs.recipe }}/
