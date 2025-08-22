@@ -8,7 +8,7 @@ This repository serves as the official Dfinity recipe repository for various ICP
 
 ## Repository Structure
 
-```
+```text
 icp-recipes/
 ├── recipes/                    # Recipe templates organized by type
 │   ├── prebuilt/              # Pre-built canister recipes
