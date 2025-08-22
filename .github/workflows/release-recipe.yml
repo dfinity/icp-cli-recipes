@@ -1,0 +1,55 @@
+name: Release Recipe
+
+on:
+  push:
+    tags:
+      - "rust-v*"
+      - "motoko-v*"
+      - "assets-v*"
+      - "prebuilt-v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release-recipe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Extract recipe and version from tag
+        id: tag_info
+        run: |
+          TAG=${GITHUB_REF#refs/tags/}
+          RECIPE=$(echo $TAG | cut -d'-' -f1)
+          VERSION=$(echo $TAG | cut -d'-' -f2-)
+          echo "recipe=$RECIPE" >> $GITHUB_OUTPUT
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Package Recipe
+        run: |
+          mkdir -p release
+
+          # Copy individual recipe files
+          cp recipes/${{ steps.tag_info.outputs.recipe }}/recipe.hbs release/
+          cp recipes/${{ steps.tag_info.outputs.recipe }}/README.md release/
+
+          # Create archives
+          tar -czf release/${{ steps.tag_info.outputs.recipe }}-${{ steps.tag_info.outputs.version }}.tar.gz recipes/${{ steps.tag_info.outputs.recipe }}/
+          zip -r release/${{ steps.tag_info.outputs.recipe }}-${{ steps.tag_info.outputs.version }}.zip recipes/${{ steps.tag_info.outputs.recipe }}/
+
+      - name: Generate Checksums
+        run: |
+          cd release
+          sha256sum * > checksums.txt
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ steps.tag_info.outputs.recipe }}-${{ steps.tag_info.outputs.version }}
+          name: ${{ steps.tag_info.outputs.recipe }} ${{ steps.tag_info.outputs.version }}
+          files: release/*
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

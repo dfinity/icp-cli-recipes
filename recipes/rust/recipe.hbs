@@ -1,0 +1,26 @@
+build:
+  steps:
+    - type: script
+      commands:
+        - cargo build --package {{ package }} --target wasm32-unknown-unknown --release
+        - sh -c 'mv target/wasm32-unknown-unknown/release/{{ replace "-" "_" package }}.wasm "$ICP_WASM_OUTPUT_PATH"'
+
+    - type: script
+      commands:
+        - sh -c 'ic-wasm "$ICP_WASM_OUTPUT_PATH" -o "${ICP_WASM_OUTPUT_PATH}" metadata "cargo:version" -d "$(cargo --version)" --keep-name-section'
+
+    {{> wasm-inject-metadata name="template:type" value="rust" }}
+
+    {{#if metadata }}
+    {{#each metadata }}
+    {{> wasm-inject-metadata name=name value=value }}
+    {{/each}}
+    {{/if}}
+
+    {{#if shrink }}
+    {{> wasm-shrink }}
+    {{/if}}
+
+    {{#if compress }}
+    {{> wasm-compress }}
+    {{/if}}

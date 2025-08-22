@@ -1,0 +1,21 @@
+build:
+  steps:
+    - type: pre-built
+      path: {{ path }}
+      sha256: {{ sha256 }}
+
+    {{> wasm-inject-metadata name="template:type" value="pre-built" }}
+
+    {{#if metadata }}
+    {{#each metadata }}
+    {{> wasm-inject-metadata name=name value=value }}
+    {{/each}}
+    {{/if}}
+
+    {{#if shrink }}
+    {{> wasm-shrink }}
+    {{/if}}
+
+    {{#if compress }}
+    {{> wasm-compress }}
+    {{/if}}
