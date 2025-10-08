@@ -28,7 +28,7 @@ canister:
 - **motoko**: For compiling Motoko source code
 - **rust**: For building Rust canisters with Cargo
 
-## Recipe Authoring Guide
+## Authoring Recipes
 
 See [Recipe Authoring Guide](docs/recipe-authoring.md) for guidelines on creating new recipes.
 
