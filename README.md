@@ -6,36 +6,6 @@ A comprehensive repository of Internet Computer (IC) canister build recipes usin
 
 This repository serves as the official Dfinity recipe repository for various ICP projects. Recipes are specified as Handlebars templates that generate build configurations for different types of IC canisters.
 
-## Repository Structure
-
-```text
-icp-recipes/
-├── recipes/                    # Recipe templates organized by type
-│   ├── prebuilt/              # Pre-built canister recipes
-│   │   ├── recipe.hbs         # Handlebars template
-│   │   └── README.md          # Recipe documentation
-│   ├── assets/                # Assets canister recipes
-│   │   ├── recipe.hbs         # Handlebars template
-│   │   └── README.md          # Recipe documentation
-│   ├── motoko/                # Motoko canister recipes
-│   │   ├── recipe.hbs         # Handlebars template
-│   │   └── README.md          # Recipe documentation
-│   └── rust/                  # Rust canister recipes
-│       ├── recipe.hbs         # Handlebars template
-│       └── README.md          # Recipe documentation
-├── partials/                  # Shared Handlebars partials
-│   ├── wasm-inject-metadata.hbs
-│   ├── wasm-shrink.hbs
-│   └── wasm-compress.hbs
-├── docs/                      # Documentation
-│   ├── recipe-authoring.md    # Guide for creating recipes
-│   ├── template-reference.md  # Handlebars facilities reference
-│   └── contributing.md        # Contribution guidelines
-└── .github/                   # CI/CD workflows
-    └── workflows/
-        └── release.yml        # Automated release workflow
-```
-
 ## Using Recipes
 
 Recipes are consumed by referencing them in your `icp.yaml` file:
@@ -58,9 +28,9 @@ canister:
 - **motoko**: For compiling Motoko source code
 - **rust**: For building Rust canisters with Cargo
 
-## Contributing
+## Recipe Authoring Guide
 
-See [CONTRIBUTING.md](docs/contributing.md) for guidelines on adding new recipes.
+See [Recipe Authoring Guide](docs/recipe-authoring.md) for guidelines on creating new recipes.
 
 ## Versioning
 
@@ -74,6 +44,10 @@ This repository follows semantic versioning. Each release publishes recipe artif
 - [ ] Enhanced documentation with interactive examples
 - [ ] Community recipe submission process
 
+## Contributing
+
+Contributions are welcome! Please see the [contribution guide](./.github/CONTRIBUTING.md) for more information.
+
 ## License
 
-This project is licensed under the Apache 2.0 License.
+This project is licensed under the [Apache-2.0](./LICENSE) license.
