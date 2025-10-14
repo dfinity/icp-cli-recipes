@@ -2,13 +2,12 @@ build:
   steps:
     - type: script
       commands:
-        - sh -c 'command -v moc >/dev/null 2>&1 || { echo >&2 "moc not found. To install moc, see https://internetcomputer.org/docs/building-apps/getting-started/install \n"; exit 1; }'
-        - sh -c 'moc {{ entry }}'
-        - sh -c 'mv main.wasm "$ICP_WASM_OUTPUT_PATH"'
+        - sh -c 'command -v mops >/dev/null 2>&1 || { echo >&2 "'mops' not found on path. To install Mops, see https://mops.one/docs/install.\n"; exit 1; }'
+        - sh -c '$(mops toolchain bin moc) "{{ main }}" {{ flags }} $(mops sources) -o "$ICP_WASM_OUTPUT_PATH"'
 
     - type: script
       commands:
-        - sh -c 'ic-wasm "$ICP_WASM_OUTPUT_PATH" -o "${ICP_WASM_OUTPUT_PATH}" metadata "moc:version" -d "$(moc --version)" --keep-name-section'
+        - sh -c 'ic-wasm "$ICP_WASM_OUTPUT_PATH" -o "${ICP_WASM_OUTPUT_PATH}" metadata "moc:version" -d "$($(mops toolchain bin moc) --version)" --keep-name-section'
 
     {{> wasm-inject-metadata name="template:type" value="motoko" }}
 
