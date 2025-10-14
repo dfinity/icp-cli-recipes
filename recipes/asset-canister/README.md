@@ -1,4 +1,4 @@
-# Assets Recipe
+# Asset Canister Recipe
 
 Download and configure the official IC assets canister with asset synchronization capabilities.
 
@@ -10,7 +10,7 @@ Example of how to reference this recipe in an `icp.yaml` file:
 canister:
   name: frontend
   recipe:
-    type: "@dfinity/assets"
+    type: "@dfinity/asset-canister"
     configuration:
       version: 0.23.0
       dir: dist
@@ -20,7 +20,7 @@ canister:
 
 | Parameter | Type | Required | Description | Default |
 |-----------|------|----------|-------------|---------|
-| version | string | No | SDK version tag to download assets canister from, defaults to using the main branch| - |
+| version | string | No | SDK version tag to download assets canister from, defaults to 0.29.2| - |
 | dir | string | Yes | Directory containing frontend assets to synchronize | - |
 | metadata | array | No | Array of key-value pairs for custom metadata | [] |
 
@@ -38,7 +38,7 @@ canister:
 canister:
   name: website
   recipe:
-    type: "@dfinity/assets"
+    type: "@dfinity/asset-canister"
     configuration:
       dir: build
 ```
@@ -49,7 +49,7 @@ canister:
 canister:
   name: spa-frontend
   recipe:
-    type: "@dfinity/assets"
+    type: "@dfinity/asset-canister"
     configuration:
       version: 0.23.0
       dir: dist
