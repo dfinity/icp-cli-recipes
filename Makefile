@@ -1,27 +1,14 @@
-.PHONY: release-partials release-recipe release-recipes help
+.PHONY: release-recipe release-recipes help
 
 help:
 	@echo "Available targets:"
-	@echo "  release-partials VERSION_TAG=<version>  - Release partials with specified version"
 	@echo "  release-recipe RECIPE=<name> VERSION_TAG=<version> - Release specific recipe with version"
 	@echo "  release-recipes VERSION_TAG=<version>   - Release all recipes with specified version"
 	@echo ""
 	@echo "Examples:"
-	@echo "  make release-partials VERSION_TAG=v1.0.0"
 	@echo "  make release-recipe RECIPE=rust VERSION_TAG=v1.0.0"
 	@echo "  make release-recipe RECIPE=motoko VERSION_TAG=v1.1.0"
 	@echo "  make release-recipes VERSION_TAG=v1.0.0"
-
-release-partials:
-	@if [ -z "$(VERSION_TAG)" ]; then \
-		echo "Error: VERSION_TAG is required"; \
-		echo "Usage: make release-partials VERSION_TAG=v1.0.0"; \
-		exit 1; \
-	fi
-	@echo "Creating partials release tag: partials-$(VERSION_TAG)"
-	git tag -a partials-$(VERSION_TAG) -m "Release partials $(VERSION_TAG)"
-	git push origin partials-$(VERSION_TAG)
-	@echo "Release tag created! GitHub Actions will build and publish the release."
 
 release-recipes:
 	@if [ -z "$(VERSION_TAG)" ]; then \

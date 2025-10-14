@@ -1,4 +1,4 @@
-# Assets Recipe
+# Asset Canister Recipe
 
 Download and configure the official IC assets canister with asset synchronization capabilities.
 
@@ -10,23 +10,19 @@ Example of how to reference this recipe in an `icp.yaml` file:
 canister:
   name: frontend
   recipe:
-    type: assets
-    url: https://github.com/dfinity/icp-recipes/releases/download/v1.0.0/recipes/assets/recipe.yml
+    type: "@dfinity/asset-canister"
     configuration:
       version: 0.23.0
       dir: dist
-      shrink: true
 ```
 
 ## Configuration Parameters
 
 | Parameter | Type | Required | Description | Default |
 |-----------|------|----------|-------------|---------|
-| version | string | Yes | SDK version tag to download assets canister from | - |
+| version | string | No | SDK version tag to download assets canister from, defaults to 0.29.2| - |
 | dir | string | Yes | Directory containing frontend assets to synchronize | - |
 | metadata | array | No | Array of key-value pairs for custom metadata | [] |
-| shrink | boolean | No | Enable WASM optimization to reduce file size | false |
-| compress | boolean | No | Enable gzip compression of WASM file | false |
 
 ## Prerequisites
 
@@ -42,10 +38,8 @@ canister:
 canister:
   name: website
   recipe:
-    type: assets
-    url: https://github.com/dfinity/icp-recipes/releases/download/v1.0.0/recipes/assets/recipe.yml
+    type: "@dfinity/asset-canister"
     configuration:
-      version: 0.23.0
       dir: build
 ```
 
@@ -55,13 +49,10 @@ canister:
 canister:
   name: spa-frontend
   recipe:
-    type: assets
-    url: https://github.com/dfinity/icp-recipes/releases/download/v1.0.0/recipes/assets/recipe.yml
+    type: "@dfinity/asset-canister"
     configuration:
       version: 0.23.0
       dir: dist
-      shrink: true
-      compress: true
       metadata:
         - name: "frontend:framework"
           value: "react"
@@ -74,11 +65,8 @@ canister:
 When this recipe is executed:
 
 1. Downloads the official assets canister WASM from the specified SDK version
-2. Injects template type metadata ("template:type" = "assets")
-3. Injects any custom metadata specified in the configuration
-4. Optionally optimizes the WASM file if `shrink` is enabled
-5. Optionally compresses the WASM file if `compress` is enabled
-6. Configures asset synchronization for the specified directory
+2. Injects any custom metadata specified in the configuration
+3. Configures asset synchronization for the specified directory
 
 ## Asset Synchronization
 
