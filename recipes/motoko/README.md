@@ -10,8 +10,7 @@ Example of how to reference this recipe in an `icp.yaml` file:
 canister:
   name: backend
   recipe:
-    type: motoko
-    url: https://github.com/dfinity/icp-recipes/releases/download/v1.0.0/recipes/motoko/recipe.yml
+    type: "@dfinity/motoko"
     configuration:
       entry: src/main.mo
       shrink: true
@@ -44,8 +43,7 @@ To install the Motoko compiler, see: <https://internetcomputer.org/docs/building
 canister:
   name: hello-world
   recipe:
-    type: motoko
-    url: https://github.com/dfinity/icp-recipes/releases/download/v1.0.0/recipes/motoko/recipe.yml
+    type: "@dfinity/motoko"
     configuration:
       entry: src/main.mo
 ```
@@ -56,8 +54,7 @@ canister:
 canister:
   name: complex-backend
   recipe:
-    type: motoko
-    url: https://github.com/dfinity/icp-recipes/releases/download/v1.0.0/recipes/motoko/recipe.yml
+    type: "@dfinity/motoko"
     configuration:
       entry: src/backend.mo
       shrink: true

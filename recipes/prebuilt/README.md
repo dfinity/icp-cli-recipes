@@ -10,8 +10,7 @@ Example of how to reference this recipe in an `icp.yaml` file:
 canister:
   name: my-canister
   recipe:
-    type: prebuilt
-    url: https://github.com/dfinity/icp-recipes/releases/download/v1.0.0/recipes/prebuilt/recipe.yml
+    type: "@dfinity/pre-built"
     configuration:
       path: dist/canister.wasm
       sha256: 17a05e36278cd04c7ae6d3d3226c136267b9df7525a0657521405e22ec96be7a
@@ -27,10 +26,8 @@ canister:
 | Parameter | Type | Required | Description | Default |
 |-----------|------|----------|-------------|---------|
 | path | string | Yes | Local path to the pre-built WASM file | - |
-| sha256 | string | Yes | SHA256 hash for integrity verification | - |
+| sha256 | string | No | SHA256 hash for integrity verification | - |
 | metadata | array | No | Array of key-value pairs for custom metadata | [] |
-| shrink | boolean | No | Enable WASM optimization to reduce file size | false |
-| compress | boolean | No | Enable gzip compression of WASM file | false |
 
 ## Prerequisites
 
@@ -46,8 +43,7 @@ canister:
 canister:
   name: simple-canister
   recipe:
-    type: prebuilt
-    url: https://github.com/dfinity/icp-recipes/releases/download/v1.0.0/recipes/prebuilt/recipe.yml
+    type: "@dfinity/pre-built"
     configuration:
       path: target/wasm32-unknown-unknown/release/my_canister.wasm
       sha256: abc123def456...
@@ -59,13 +55,10 @@ canister:
 canister:
   name: optimized-canister
   recipe:
-    type: prebuilt
-    url: https://github.com/dfinity/icp-recipes/releases/download/v1.0.0/recipes/prebuilt/recipe.yml
+    type: "@dfinity/pre-built"
     configuration:
       path: dist/production-canister.wasm
       sha256: xyz789abc123...
-      shrink: true
-      compress: true
       metadata:
         - name: "build:version"
           value: "2.1.0"
@@ -83,8 +76,6 @@ When this recipe is executed:
 2. Verifies file integrity using the provided SHA256 hash
 3. Injects template type metadata ("template:type" = "pre-built")
 4. Injects any custom metadata specified in the configuration
-5. Optionally optimizes the WASM file if `shrink` is enabled
-6. Optionally compresses the WASM file if `compress` is enabled
 
 ## Common Issues
 
