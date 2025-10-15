@@ -5,7 +5,7 @@ on:
     tags:
       - "rust-v*"
       - "motoko-v*"
-      - "assets-v*"
+      - "asset-canister-v*"
       - "prebuilt-v*"
       - "rust-latest"
       - "motoko-latest"
