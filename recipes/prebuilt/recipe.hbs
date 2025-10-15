@@ -1,21 +1,24 @@
+{{! A recipe for deploying a pre-built canister }}
+{{! `path: string` path to the wasm }}
+{{! `sha256: string` Optional, the hash of the wasm to deploy}}
+{{! `metadata: [name: string, value: string]`: An array of name/value pairs that get injected into the wasm metadata section }}
+
 build:
+
   steps:
+
     - type: pre-built
       path: {{ path }}
+      {{#if sha256 }}
       sha256: {{ sha256 }}
+      {{/if}}
 
-    {{> wasm-inject-metadata name="template:type" value="pre-built" }}
-
-    {{#if metadata }}
-    {{#each metadata }}
-    {{> wasm-inject-metadata name=name value=value }}
-    {{/each}}
+    {{#if metadata}}
+    - type: script
+      commands:
+        {{#each metadata}}
+        - command -v ic-wasm >/dev/null 2>&1 || { echo >&2 "ic-wasm not found. To install ic-wasm, see https://github.com/dfinity/ic-wasm \n"; exit 1; }
+        - ic-wasm "$ICP_WASM_OUTPUT_PATH" -o "${ICP_WASM_OUTPUT_PATH}" metadata "{{ name }}" -d "{{ value }}" --keep-name-section
+        {{/each}}
     {{/if}}
 
-    {{#if shrink }}
-    {{> wasm-shrink }}
-    {{/if}}
-
-    {{#if compress }}
-    {{> wasm-compress }}
-    {{/if}}

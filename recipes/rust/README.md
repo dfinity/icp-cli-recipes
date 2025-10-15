@@ -10,8 +10,7 @@ Example of how to reference this recipe in an `icp.yaml` file:
 canister:
   name: backend
   recipe:
-    type: rust
-    url: https://github.com/dfinity/icp-recipes/releases/download/v1.0.0/recipes/rust/recipe.yml
+    type: "@dfinity/rust"
     configuration:
       package: my-canister
       shrink: true
@@ -53,8 +52,7 @@ cargo install ic-wasm
 canister:
   name: hello-rust
   recipe:
-    type: rust
-    url: https://github.com/dfinity/icp-recipes/releases/download/v1.0.0/recipes/rust/recipe.yml
+    type: "@dfinity/rust"
     configuration:
       package: hello-rust
 ```
@@ -65,8 +63,7 @@ canister:
 canister:
   name: dapp-backend
   recipe:
-    type: rust
-    url: https://github.com/dfinity/icp-recipes/releases/download/v1.0.0/recipes/rust/recipe.yml
+    type: "@dfinity/rust"
     configuration:
       package: dapp-backend
       shrink: true
