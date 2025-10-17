@@ -1,21 +1,20 @@
-{{! A recipe for building a motoko canister }}
-{{! `entry: string` The entry point for the canister }}
+{{! A recipe for building a Motoko canister }}
+{{! `main: string` Motoko file which contains the main actor }}
+{{! `args: string` Additional arguments to pass to the moc compiler }}
 {{! `shrink: boolean` Optimizes the wasm with ic-wasm }}
 {{! `compressed: boolean` determins whether the was should be gzipped }}
 {{! `metadata: [name: string, value: string]`: An array of name/value pairs that get injected into the wasm metadata section }}
 
 build:
   steps:
+    - type: script
+      commands:
+        - sh -c 'command -v mops >/dev/null 2>&1 || { echo >&2 "'mops' not found on path. To install Mops, see https://mops.one/docs/install.\n"; exit 1; }'
+        - sh -c '$(mops toolchain bin moc) "{{ main }}" {{ args }} $(mops sources) -o "$ICP_WASM_OUTPUT_PATH"'
 
     - type: script
       commands:
-        - command -v moc >/dev/null 2>&1 || { echo >&2 "moc not found. To install moc, see https://internetcomputer.org/docs/building-apps/getting-started/install \n"; exit 1; }
-        - moc {{ entry }}
-        - mv main.wasm "$ICP_WASM_OUTPUT_PATH"
-
-    - type: script
-      commands:
-        - ic-wasm "$ICP_WASM_OUTPUT_PATH" -o "${ICP_WASM_OUTPUT_PATH}" metadata "moc:version" -d "$(moc --version)" --keep-name-section
+        - sh -c 'ic-wasm "$ICP_WASM_OUTPUT_PATH" -o "${ICP_WASM_OUTPUT_PATH}" metadata "moc:version" -d "$($(mops toolchain bin moc) --version)" --keep-name-section'
 
     - type: script
       commands:
