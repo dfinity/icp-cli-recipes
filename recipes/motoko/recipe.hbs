@@ -10,7 +10,7 @@ build:
     - type: script
       commands:
         - sh -c 'command -v mops >/dev/null 2>&1 || { echo >&2 "'mops' not found on path. To install Mops, see https://mops.one/docs/install.\n"; exit 1; }'
-        - sh -c '$(mops toolchain bin moc) "{{ main }}" {{ args }} --public-metadata candid:service $(mops sources) -o "$ICP_WASM_OUTPUT_PATH"'
+        - sh -c '$(mops toolchain bin moc) "{{ main }}" {{ args }} {{#if !candid}}--public-metadata candid:service {{/if}}$(mops sources) -o "$ICP_WASM_OUTPUT_PATH"'
 
     - type: script
       commands:
@@ -21,6 +21,9 @@ build:
         - command -v ic-wasm >/dev/null 2>&1 || { echo >&2 "ic-wasm not found. To install ic-wasm, see https://github.com/dfinity/ic-wasm \n"; exit 1; }
         - ic-wasm "$ICP_WASM_OUTPUT_PATH" -o "${ICP_WASM_OUTPUT_PATH}" metadata "cargo:version" -d "$(cargo --version)" --keep-name-section
         - ic-wasm "$ICP_WASM_OUTPUT_PATH" -o "${ICP_WASM_OUTPUT_PATH}" metadata "template:type" -d "motoko" --keep-name-section
+        {{#if candid}}
+        - ic-wasm "$ICP_WASM_OUTPUT_PATH" -o "${ICP_WASM_OUTPUT_PATH}" metadata "candid:service" -f '{{ candid }}' -v public --keep-name-section
+        {{/if}}
         {{#if metadata}}
         {{#each metadata}}
         - ic-wasm "$ICP_WASM_OUTPUT_PATH" -o "${ICP_WASM_OUTPUT_PATH}" metadata "{{ name }}" -d "{{ value }}" --keep-name-section

@@ -21,7 +21,7 @@ canister:
 | Parameter | Type    | Required | Description                                  | Default |
 |-----------|---------|----------|----------------------------------------------|---------|
 | package   | string  | Yes      | Name of the Rust package to build            | -       |
-| candid    | string  | Yes      | Path to the Candid interface file            |         |
+| candid    | string  | No       | Path to the Candid interface file            |         |
 | metadata  | array   | No       | Array of key-value pairs for custom metadata | []      |
 | shrink    | boolean | No       | Enable WASM optimization to reduce file size | false   |
 | compress  | boolean | No       | Enable gzip compression of WASM file         | false   |
