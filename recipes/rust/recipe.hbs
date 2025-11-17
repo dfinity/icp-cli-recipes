@@ -1,5 +1,6 @@
 {{! A recipe for building a rust canister }}
 {{! `package: string` The package to build }}
+{{! `candid: string` The path to the Candid interface file }}
 {{! `shrink: boolean` Optimizes the wasm with ic-wasm }}
 {{! `compressed: boolean` determins whether the was should be gzipped }}
 {{! `metadata: [name: string, value: string]`: An array of name/value pairs that get injected into the wasm metadata section }}
@@ -13,9 +14,15 @@ build:
 
     - type: script
       commands:
-        - command -v ic-wasm >/dev/null 2>&1 || { echo >&2 "ic-wasm not found. To install ic-wasm, see https://github.com/dfinity/ic-wasm \n"; exit 1; }
+        - command -v ic-wasm >/dev/null 2>&1 || { echo >&2 'ic-wasm not found. To install ic-wasm, see https://github.com/dfinity/ic-wasm \n'; exit 1; }
         - ic-wasm "$ICP_WASM_OUTPUT_PATH" -o "${ICP_WASM_OUTPUT_PATH}" metadata "cargo:version" -d "$(cargo --version)" --keep-name-section
         - ic-wasm "$ICP_WASM_OUTPUT_PATH" -o "${ICP_WASM_OUTPUT_PATH}" metadata "template:type" -d "rust" --keep-name-section
+        {{#if candid}}
+        - ic-wasm "$ICP_WASM_OUTPUT_PATH" -o "${ICP_WASM_OUTPUT_PATH}" metadata "candid:service" -f '{{ candid }}' -v public --keep-name-section
+        {{else}}
+        - command -v candid-extractor >/dev/null 2>&1 || { echo >&2 'candid-extractor not found. Run `cargo install candid-extractor` to install it.'; exit 1; }
+        - did="$(mktemp)"; candid-extractor "$ICP_WASM_OUTPUT_PATH" >"$did" && ic-wasm "$ICP_WASM_OUTPUT_PATH" -o "${ICP_WASM_OUTPUT_PATH}" metadata "candid:service" -f "$did" -v public --keep-name-section
+        {{/if}}
         {{#if metadata}}
         {{#each metadata}}
         - ic-wasm "$ICP_WASM_OUTPUT_PATH" -o "${ICP_WASM_OUTPUT_PATH}" metadata "{{ name }}" -d "{{ value }}" --keep-name-section
