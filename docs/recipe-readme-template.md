@@ -11,7 +11,7 @@ Brief description of what this recipe does and when to use it.
 
 ## Usage
 
-Example of how to reference a recipe in an `icp.yaml` file:
+Example of how to reference this recipe in an `icp.yaml` file:
 
 ```yaml
 canisters:
