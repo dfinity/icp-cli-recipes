@@ -14,13 +14,12 @@ Brief description of what this recipe does and when to use it.
 Example of how to reference this recipe in an `icp.yaml` file:
 
 ```yaml
-canister:
-  name: my-canister
-  recipe:
-    type: [recipe-type]
-    url: https://github.com/dfinity/icp-recipes/releases/download/v1.0.0/recipes/[recipe-name]/recipe.yml
-    configuration:
-      # Recipe-specific configuration parameters
+canisters:
+  - name: my-canister
+    recipe:
+      type: https://github.com/dfinity/icp-cli-recipes/releases/download/v1.0.0/recipes/[recipe-name]/recipe.yml
+      configuration:
+        # Recipe-specific configuration parameters
 ```
 
 ## Configuration Parameters
@@ -101,7 +100,7 @@ Explain what happens when this recipe is executed:
 
 See the individual recipe directories for examples of this template in action:
 
-- `recipes/prebuilt/README.md`
-- `recipes/assets/README.md`
+- `recipes/asset-canister/README.md`
 - `recipes/motoko/README.md`
+- `recipes/prebuilt/README.md`
 - `recipes/rust/README.md`
