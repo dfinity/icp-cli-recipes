@@ -4,12 +4,12 @@ on:
   push:
     tags:
       - "rust-v*"
-      - "motoko-v*"
-      - "asset-canister-v*"
-      - "prebuilt-v*"
       - "rust-latest"
+      - "motoko-v*"
       - "motoko-latest"
-      - "assets-latest"
+      - "asset-canister-v*"
+      - "asset-canister-latest"
+      - "prebuilt-v*"
       - "prebuilt-latest"
 
 permissions:
@@ -26,8 +26,8 @@ jobs:
         id: tag_info
         run: |
           TAG=${GITHUB_REF#refs/tags/}
-          RECIPE=$(echo $TAG | cut -d'-' -f1)
-          VERSION=$(echo $TAG | cut -d'-' -f2-)
+          RECIPE=$(echo "$TAG" | sed 's/-[^-]*$//')
+          VERSION=$(echo "$TAG" | sed 's/^.*-//')
 
           # Handle latest tags specially
           if [[ "$VERSION" == "latest" ]]; then
