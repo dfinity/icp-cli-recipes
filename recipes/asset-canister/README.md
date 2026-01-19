@@ -12,7 +12,7 @@ canister:
   recipe:
     type: "@dfinity/asset-canister"
     configuration:
-      version: 0.23.0
+      version: 0.30.2
       dir: dist
 ```
 
@@ -20,14 +20,15 @@ canister:
 
 | Parameter | Type | Required | Description | Default |
 |-----------|------|----------|-------------|---------|
-| version | string | No | SDK version tag to download assets canister from, defaults to 0.29.2| - |
+| version | string | No | SDK version tag to download assets canister from, defaults to master branch | - |
 | dir | string | Yes | Directory containing frontend assets to synchronize | - |
+| build | array | No | Commands to build the frontend assets | [] |
 | metadata | array | No | Array of key-value pairs for custom metadata | [] |
 
 ## Prerequisites
 
 - `ic-wasm` tool must be installed for metadata injection and optimization
-- Frontend assets must be built and available in the specified directory
+- Frontend assets must either exist in the specified directory or be built using provided commands
 - Internet connection required to download the assets canister WASM
 
 ## Examples
@@ -51,7 +52,10 @@ canister:
   recipe:
     type: "@dfinity/asset-canister"
     configuration:
-      version: 0.23.0
+      version: 0.30.2
+      build:
+        - npm install
+        - npm run build
       dir: dist
       metadata:
         - name: "frontend:framework"

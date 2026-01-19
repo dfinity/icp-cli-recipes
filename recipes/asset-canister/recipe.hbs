@@ -1,11 +1,21 @@
 {{! A recipe for building static assets and deploying them to an asset canister }}
 {{! `version: string` Optional, The version of the asset canister to use. Defaults to the master branch}}
 {{! `dir: string` Required, the directory of assets to synchronize }}
+{{! `build: [string]` Optional, array of commands to build the frontend assets before deployment }}
 {{! `metadata: [name: string, value: string]`: An array of name/value pairs that get injected into the wasm metadata section }}
 
 build:
 
   steps:
+
+    {{#if build}}
+    {{! Execute frontend build command(s) first }}
+    - type: script
+      commands:
+        {{#each build}}
+        - {{ this }}
+        {{/each}}
+    {{/if}}
 
     - type: pre-built
       {{! There is no convenient way to define defaults }}
