@@ -22,8 +22,8 @@ build:
       {{#if version}}
       url: https://github.com/dfinity/sdk/raw/refs/tags/{{ version }}/src/distributed/assetstorage.wasm.gz
       {{else}}
-      {{! TODO We needed a latest tag on the sdk repo }}
-      url: https://github.com/dfinity/sdk/raw/refs/heads/master/src/distributed/assetstorage.wasm.gz
+      {{! TODO We needed a latest tag on the sdk repo and adjust the README once we use it}}
+      url: https://github.com/dfinity/sdk/raw/refs/tags/0.30.2/src/distributed/assetstorage.wasm.gz
       {{/if}}
 
     {{#if metadata}}
