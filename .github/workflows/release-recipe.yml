@@ -116,3 +116,23 @@ jobs:
           body_path: release_notes.md
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update latest tag
+        if: steps.tag_info.outputs.is_latest == 'false'
+        run: |
+          RECIPE="${{ steps.tag_info.outputs.recipe }}"
+          CURRENT_TAG="${GITHUB_REF#refs/tags/}"
+
+          echo "Updating ${RECIPE}-latest to point to ${CURRENT_TAG}"
+
+          # Delete the old latest tag locally and remotely
+          git tag -d ${RECIPE}-latest 2>/dev/null || true
+          git push origin :refs/tags/${RECIPE}-latest 2>/dev/null || true
+
+          # Create new latest tag pointing to current commit
+          git tag ${RECIPE}-latest
+
+          # Push the new latest tag
+          git push origin ${RECIPE}-latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
