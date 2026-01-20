@@ -21,6 +21,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          fetch-depth: 0  # Fetch all history and tags
 
       - name: Extract recipe and version from tag
         id: tag_info
@@ -56,12 +58,61 @@ jobs:
           cd release
           sha256sum * > checksums.txt
 
+      - name: Find previous recipe version
+        id: prev_version
+        run: |
+          RECIPE="${{ steps.tag_info.outputs.recipe }}"
+          CURRENT_TAG="${GITHUB_REF#refs/tags/}"
+
+          # Find the previous version tag for this recipe (excluding -latest tags and current tag)
+          PREV_TAG=$(git tag --sort=-version:refname -l "${RECIPE}-v*" | grep -v "${CURRENT_TAG}" | head -n 1)
+
+          if [ -z "$PREV_TAG" ]; then
+            echo "No previous version found for ${RECIPE}"
+            echo "previous_tag=" >> $GITHUB_OUTPUT
+          else
+            echo "Found previous tag: ${PREV_TAG}"
+            echo "previous_tag=${PREV_TAG}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Generate Release Notes Body
+        id: release_notes
+        run: |
+          RECIPE="${{ steps.tag_info.outputs.recipe }}"
+          CURRENT_TAG="${GITHUB_REF#refs/tags/}"
+          PREV_TAG="${{ steps.prev_version.outputs.previous_tag }}"
+
+          if [ -n "$PREV_TAG" ]; then
+            echo "## What's Changed" > release_notes.md
+            echo "" >> release_notes.md
+
+            # Get commits that affect this recipe's directory
+            COMMITS=$(git log ${PREV_TAG}..${CURRENT_TAG} --pretty=format:"* %s (%h)" --no-merges -- recipes/${RECIPE}/)
+
+            if [ -n "$COMMITS" ]; then
+              echo "Changes since ${PREV_TAG}:" >> release_notes.md
+              echo "" >> release_notes.md
+              echo "$COMMITS" >> release_notes.md
+              echo "" >> release_notes.md
+            else
+              echo "No changes to the ${RECIPE} recipe files." >> release_notes.md
+              echo "" >> release_notes.md
+            fi
+
+            echo "" >> release_notes.md
+            echo "**Full Changelog**: https://github.com/${{ github.repository }}/compare/${PREV_TAG}...${CURRENT_TAG}" >> release_notes.md
+          else
+            echo "## What's Changed" > release_notes.md
+            echo "" >> release_notes.md
+            echo "Initial release of the ${RECIPE} recipe." >> release_notes.md
+          fi
+
       - name: Create Release
         uses: softprops/action-gh-release@aec2ec56f94eb8180ceec724245f64ef008b89f5 # v2.4.0
         with:
           tag_name: ${{ steps.tag_info.outputs.recipe }}-${{ steps.tag_info.outputs.version }}
           name: ${{ steps.tag_info.outputs.recipe }} ${{ steps.tag_info.outputs.version }}
           files: release/*
-          generate_release_notes: true
+          body_path: release_notes.md
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
