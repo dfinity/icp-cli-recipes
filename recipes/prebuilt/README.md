@@ -98,10 +98,10 @@ When this recipe is executed:
 
 - [Rust Recipe](../rust/README.md) - For building Rust canisters from source
 - [Motoko Recipe](../motoko/README.md) - For building Motoko canisters from source
-- [Assets Recipe](../assets/README.md) - For the official IC assets canister
+- [Asset Canister Recipe](../asset-canister/README.md) - For the official IC assets canister
 
 Use this recipe when you have a pre-compiled WASM file and want to add metadata or optimize it without rebuilding from source.
 
-## Version History
+## Release History
 
-- v1.0.0 - Initial release with basic pre-built WASM support
+See the [release history](https://github.com/dfinity/icp-cli-recipes/releases?q=prebuilt&expanded=true) for changelogs, version updates, and breaking changes.

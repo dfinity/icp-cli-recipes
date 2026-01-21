@@ -147,10 +147,10 @@ serde = { version = "1.0", features = ["derive"] }
 
 - [Motoko Recipe](../motoko/README.md) - For building Motoko canisters
 - [Pre-built Recipe](../prebuilt/README.md) - For using pre-compiled WASM files
-- [Assets Recipe](../assets/README.md) - For frontend assets canister
+- [Asset Canister Recipe](../asset-canister/README.md) - For frontend assets canister
 
 Use this recipe when developing IC canisters in Rust, which provides performance benefits and access to the rich Rust ecosystem.
 
-## Version History
+## Release History
 
-- v1.0.0 - Initial release with Rust compilation support
+See the [release history](https://github.com/dfinity/icp-cli-recipes/releases?q=rust&expanded=true) for changelogs, version updates, and breaking changes.
