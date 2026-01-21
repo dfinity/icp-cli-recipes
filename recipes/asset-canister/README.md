@@ -106,6 +106,6 @@ The assets canister automatically synchronizes files from your specified directo
 
 Use this recipe for frontend applications that need to serve static assets and web content on the Internet Computer.
 
-## Version History
+## Release History
 
-- v1.0.0 - Initial release with assets canister support and synchronization
+See the [release history](https://github.com/dfinity/icp-cli-recipes/releases?q=asset-canister&expanded=true) for changelogs, version updates, and breaking changes.

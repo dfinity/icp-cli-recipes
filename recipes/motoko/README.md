@@ -120,10 +120,10 @@ my-project/
 
 - [Rust Recipe](../rust/README.md) - For building Rust canisters
 - [Pre-built Recipe](../prebuilt/README.md) - For using pre-compiled WASM files
-- [Assets Recipe](../assets/README.md) - For frontend assets canister
+- [Asset Canister Recipe](../asset-canister/README.md) - For frontend assets canister
 
 Use this recipe when developing IC canisters in Motoko, the native language for the Internet Computer.
 
-## Version History
+## Release History
 
-- v1.0.0 - Initial release with Motoko compilation support
+See the [release history](https://github.com/dfinity/icp-cli-recipes/releases?q=motoko&expanded=true) for changelogs, version updates, and breaking changes.
