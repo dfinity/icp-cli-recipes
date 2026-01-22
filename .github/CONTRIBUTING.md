@@ -1,6 +1,6 @@
 # Contributing
 
-Thank you for your interest in contributing to the Response Verification package for the Internet Computer.
+Thank you for your interest in contributing to ICP CLI Recipes for the Internet Computer.
 By participating in this project, you agree to abide by our [Code of Conduct](./CODE_OF_CONDUCT.md).
 
 As a member of the community, you are invited and encouraged to contribute by submitting issues, offering suggestions for improvements, adding review comments to existing pull requests, or creating new pull requests to fix issues.
@@ -81,3 +81,66 @@ If you want to submit a pull request to fix an issue or add a feature, here's a 
 ## Development
 
 Refer to the documentation in the [Recipe Authoring Guide](../docs/recipe-authoring.md) for more information on how to develop recipes.
+
+## Releases
+
+Releases are managed automatically through GitHub Actions. Each recipe is versioned independently.
+
+### For Maintainers
+
+To create a new release for a recipe:
+
+1. **Create and push a version tag** for the specific recipe:
+   ```bash
+   # For a Rust recipe release
+   git tag rust-v4.0.0
+   git push origin rust-v4.0.0
+   ```
+
+2. **The workflow automatically**:
+   - Creates a GitHub release for `rust-v4.0.0` with changelog and release artifacts
+   - Updates the `rust-latest` tag to point to the same commit as `rust-v4.0.0`
+   - Creates/updates the `rust-latest` release with:
+     - The same changelog as `rust-v4.0.0`
+     - The same release artifacts (but named with "latest")
+     - A fresh timestamp showing when it was updated
+
+### Release Naming Convention
+
+Tags follow the pattern `<recipe-name>-v<version>`:
+- `rust-v4.0.0` - Rust recipe version 4.0.0
+- `motoko-v5.0.0` - Motoko recipe version 5.0.0
+- `asset-canister-v3.0.0` - Asset canister recipe version 3.0.0
+- `prebuilt-v2.0.0` - Pre-built recipe version 2.0.0
+
+### Release Notes
+
+Release notes are automatically generated and include:
+- All commits affecting the specific recipe directory since the previous version
+- A link to the full changelog comparing the two versions
+- Release artifacts (tar.gz, zip files, checksums)
+
+### What is the `-latest` Release?
+
+Each recipe has two types of releases:
+
+1. **Versioned releases** (e.g., `rust-v4.0.0`):
+   - Permanent, immutable releases
+   - Pin to specific versions for stability
+   - Example: `rust-v4.0.0`, `rust-v3.0.0`, etc.
+
+2. **Latest release** (e.g., `rust-latest`):
+   - Always points to the most recent version
+   - Updated automatically when a new version is released
+   - Same content as the newest versioned release, but with:
+     - Updated timestamp
+     - "latest" naming for artifacts
+   - Use this to always get the newest recipe version
+
+### Viewing Releases
+
+Each recipe has its own release history:
+- [Rust releases](https://github.com/dfinity/icp-cli-recipes/releases?q=rust&expanded=true)
+- [Motoko releases](https://github.com/dfinity/icp-cli-recipes/releases?q=motoko&expanded=true)
+- [Pre-built releases](https://github.com/dfinity/icp-cli-recipes/releases?q=prebuilt&expanded=true)
+- [Asset Canister releases](https://github.com/dfinity/icp-cli-recipes/releases?q=asset-canister&expanded=true)

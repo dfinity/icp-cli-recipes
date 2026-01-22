@@ -21,6 +21,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          fetch-depth: 0  # Fetch all history and tags
 
       - name: Extract recipe and version from tag
         id: tag_info
@@ -30,14 +32,14 @@ jobs:
           VERSION=$(echo "$TAG" | sed 's/^.*-//')
 
           # Handle latest tags specially
-          if [[ "$VERSION" == "latest" ]]; then
-            echo "recipe=$RECIPE" >> $GITHUB_OUTPUT
-            echo "version=latest" >> $GITHUB_OUTPUT
-            echo "is_latest=true" >> $GITHUB_OUTPUT
+          if [ "$VERSION" = "latest" ]; then
+            echo "recipe=$RECIPE" >> "$GITHUB_OUTPUT"
+            echo "version=latest" >> "$GITHUB_OUTPUT"
+            echo "is_latest=true" >> "$GITHUB_OUTPUT"
           else
-            echo "recipe=$RECIPE" >> $GITHUB_OUTPUT
-            echo "version=$VERSION" >> $GITHUB_OUTPUT
-            echo "is_latest=false" >> $GITHUB_OUTPUT
+            echo "recipe=$RECIPE" >> "$GITHUB_OUTPUT"
+            echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+            echo "is_latest=false" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Package Recipe
@@ -56,12 +58,105 @@ jobs:
           cd release
           sha256sum * > checksums.txt
 
+      - name: Find previous recipe version
+        id: prev_version
+        run: |
+          RECIPE="${{ steps.tag_info.outputs.recipe }}"
+          CURRENT_TAG="${GITHUB_REF#refs/tags/}"
+          IS_LATEST="${{ steps.tag_info.outputs.is_latest }}"
+
+          if [ "$IS_LATEST" = "true" ]; then
+            # For -latest tags: find the versioned tag pointing to the same commit
+            CURRENT_COMMIT=$(git rev-parse HEAD)
+            CURRENT_VERSION_TAG=$(git tag --sort=-version:refname -l "${RECIPE}-v*" | while read -r tag; do
+              if [ "$(git rev-parse "$tag")" = "$CURRENT_COMMIT" ]; then
+                echo "$tag"
+                break
+              fi
+            done)
+
+            if [ -z "$CURRENT_VERSION_TAG" ]; then
+              echo "::error::No versioned tag found for this commit. A -latest tag must have a corresponding versioned tag (e.g., ${RECIPE}-v1.0.0) on the same commit."
+              exit 1
+            else
+              echo "Found versioned tag for this commit: ${CURRENT_VERSION_TAG}"
+              # Find the previous version before the current versioned tag
+              PREV_TAG=$(git tag --sort=-version:refname -l "${RECIPE}-v*" | grep -v "${CURRENT_VERSION_TAG}" | head -n 1)
+              echo "previous_tag=${PREV_TAG}" >> "$GITHUB_OUTPUT"
+              echo "compare_tag=${CURRENT_VERSION_TAG}" >> "$GITHUB_OUTPUT"
+            fi
+          else
+            # For versioned tags: find the previous version tag
+            PREV_TAG=$(git tag --sort=-version:refname -l "${RECIPE}-v*" | grep -v "${CURRENT_TAG}" | head -n 1)
+
+            if [ -z "$PREV_TAG" ]; then
+              echo "No previous version found for ${RECIPE}"
+              echo "previous_tag=" >> "$GITHUB_OUTPUT"
+            else
+              echo "Found previous tag: ${PREV_TAG}"
+              echo "previous_tag=${PREV_TAG}" >> "$GITHUB_OUTPUT"
+            fi
+            echo "compare_tag=${CURRENT_TAG}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Generate Release Notes Body
+        id: release_notes
+        run: |
+          RECIPE="${{ steps.tag_info.outputs.recipe }}"
+          PREV_TAG="${{ steps.prev_version.outputs.previous_tag }}"
+          COMPARE_TAG="${{ steps.prev_version.outputs.compare_tag }}"
+
+          if [ -n "$PREV_TAG" ] && [ -n "$COMPARE_TAG" ]; then
+            echo "## What's Changed" > release_notes.md
+            echo "" >> release_notes.md
+
+            # Get commits that affect this recipe's directory
+            COMMITS=$(git log ${PREV_TAG}..${COMPARE_TAG} --pretty=format:"* %s (%h)" --no-merges -- recipes/${RECIPE}/)
+
+            if [ -n "$COMMITS" ]; then
+              echo "Changes since ${PREV_TAG}:" >> release_notes.md
+              echo "" >> release_notes.md
+              echo "$COMMITS" >> release_notes.md
+              echo "" >> release_notes.md
+            else
+              echo "No changes to the ${RECIPE} recipe files." >> release_notes.md
+              echo "" >> release_notes.md
+            fi
+
+            echo "" >> release_notes.md
+            echo "**Full Changelog**: https://github.com/${{ github.repository }}/compare/${PREV_TAG}...${COMPARE_TAG}" >> release_notes.md
+          else
+            echo "## What's Changed" > release_notes.md
+            echo "" >> release_notes.md
+            echo "Initial release of the ${RECIPE} recipe." >> release_notes.md
+          fi
+
       - name: Create Release
         uses: softprops/action-gh-release@aec2ec56f94eb8180ceec724245f64ef008b89f5 # v2.4.0
         with:
           tag_name: ${{ steps.tag_info.outputs.recipe }}-${{ steps.tag_info.outputs.version }}
           name: ${{ steps.tag_info.outputs.recipe }} ${{ steps.tag_info.outputs.version }}
           files: release/*
-          generate_release_notes: true
+          body_path: release_notes.md
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update latest tag
+        if: steps.tag_info.outputs.is_latest == 'false'
+        run: |
+          RECIPE="${{ steps.tag_info.outputs.recipe }}"
+          CURRENT_TAG="${GITHUB_REF#refs/tags/}"
+
+          echo "Updating ${RECIPE}-latest to point to ${CURRENT_TAG}"
+
+          # Delete the old latest tag locally and remotely
+          git tag -d ${RECIPE}-latest 2>/dev/null || true
+          git push origin :refs/tags/${RECIPE}-latest 2>/dev/null || true
+
+          # Create new latest tag pointing to current commit
+          git tag ${RECIPE}-latest
+
+          # Push the new latest tag
+          git push origin ${RECIPE}-latest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
