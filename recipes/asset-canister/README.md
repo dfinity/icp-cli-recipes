@@ -20,7 +20,7 @@ canister:
 
 | Parameter | Type | Required | Description | Default |
 |-----------|------|----------|-------------|---------|
-| version | string | No | SDK version tag to download assets canister from, defaults to 0.30.2 | - |
+| version | string | No | SDK version tag to download assets canister from | latest |
 | dir | string | Yes | Directory containing frontend assets to synchronize | - |
 | build | array | No | Commands to build the frontend assets | [] |
 | metadata | array | No | Array of key-value pairs for custom metadata | [] |
