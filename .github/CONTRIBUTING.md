@@ -90,20 +90,27 @@ Releases are managed automatically through GitHub Actions. Each recipe is versio
 
 To create a new release for a recipe:
 
-1. **Create and push a version tag** for the specific recipe:
+1. **Use the Makefile** to create and push the release tag:
    ```bash
-   # For a Rust recipe release
-   git tag rust-v4.0.0
-   git push origin rust-v4.0.0
+   # For a single recipe release
+   make release-recipe RECIPE=rust VERSION_TAG=v4.0.0
+
+   # For releasing all recipes with the same version
+   make release-recipes VERSION_TAG=v1.0.0
    ```
 
+   The script will:
+   - Show a summary of commands to be executed and ask for confirmation
+   - Create and push the versioned tag (e.g., `rust-v4.0.0`)
+   - Prompt whether to also update the `-latest` tag
+
 2. **The workflow automatically**:
-   - Creates a GitHub release for `rust-v4.0.0` with changelog and release artifacts
-   - Updates the `rust-latest` tag to point to the same commit as `rust-v4.0.0`
-   - Creates/updates the `rust-latest` release with:
-     - The same changelog as `rust-v4.0.0`
-     - The same release artifacts (but named with "latest")
-     - A fresh timestamp showing when it was updated
+   - Creates a GitHub release for the versioned tag with changelog and release artifacts
+
+3. **If you updated the `-latest` tag**, manually create/update the `-latest` release on GitHub:
+   - Go to the [Releases page](https://github.com/dfinity/icp-cli-recipes/releases)
+   - Edit the existing `-latest` release or create a new one
+   - Use the same release notes as the versioned release
 
 ### Release Naming Convention
 
@@ -119,23 +126,6 @@ Release notes are automatically generated and include:
 - All commits affecting the specific recipe directory since the previous version
 - A link to the full changelog comparing the two versions
 - Release artifacts (tar.gz, zip files, checksums)
-
-### What is the `-latest` Release?
-
-Each recipe has two types of releases:
-
-1. **Versioned releases** (e.g., `rust-v4.0.0`):
-   - Permanent, immutable releases
-   - Pin to specific versions for stability
-   - Example: `rust-v4.0.0`, `rust-v3.0.0`, etc.
-
-2. **Latest release** (e.g., `rust-latest`):
-   - Always points to the most recent version
-   - Updated automatically when a new version is released
-   - Same content as the newest versioned release, but with:
-     - Updated timestamp
-     - "latest" naming for artifacts
-   - Use this to always get the newest recipe version
 
 ### Viewing Releases
 
