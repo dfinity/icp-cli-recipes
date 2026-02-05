@@ -8,6 +8,12 @@ build:
 
   steps:
 
+    {{#if metadata}}
+    - type: script
+      commands:
+        - sh -c 'command -v ic-wasm >/dev/null 2>&1 || { echo >&2 "ic-wasm not found. To install ic-wasm, see https://github.com/dfinity/ic-wasm \n"; exit 1; }'
+    {{/if}}
+
     {{#if build}}
     {{! Execute frontend build command(s) first }}
     - type: script
@@ -28,7 +34,6 @@ build:
     - type: script
       commands:
         {{#each metadata}}
-        - sh -c 'command -v ic-wasm >/dev/null 2>&1 || { echo >&2 "ic-wasm not found. To install ic-wasm, see https://github.com/dfinity/ic-wasm \n"; exit 1; }'
         - sh -c 'ic-wasm "$ICP_WASM_OUTPUT_PATH" -o "${ICP_WASM_OUTPUT_PATH}" metadata "{{ name }}" -d "{{ value }}" --keep-name-section'
         {{/each}}
     {{/if}}
