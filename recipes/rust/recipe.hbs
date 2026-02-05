@@ -9,18 +9,26 @@ build:
   steps:
     - type: script
       commands:
+        - command -v ic-wasm >/dev/null 2>&1 || { echo >&2 'ic-wasm not found. To install ic-wasm, see https://github.com/dfinity/ic-wasm \n'; exit 1; }
+        {{#unless candid}}
+        - command -v candid-extractor >/dev/null 2>&1 || { echo >&2 'candid-extractor not found. Run `cargo install candid-extractor` to install it.'; exit 1; }
+        {{/unless}}
+        {{#if compress }}
+        - command -v gzip >/dev/null 2>&1 || { echo >&2 "gzip not found. Please install gzip to compress build output. \n"; exit 1; }
+        {{/if}}
+
+    - type: script
+      commands:
         - cargo build --package {{ package }} --target wasm32-unknown-unknown --release
         - mv target/wasm32-unknown-unknown/release/{{ replace "-" "_" package }}.wasm "$ICP_WASM_OUTPUT_PATH"
 
     - type: script
       commands:
-        - command -v ic-wasm >/dev/null 2>&1 || { echo >&2 'ic-wasm not found. To install ic-wasm, see https://github.com/dfinity/ic-wasm \n'; exit 1; }
         - ic-wasm "$ICP_WASM_OUTPUT_PATH" -o "${ICP_WASM_OUTPUT_PATH}" metadata "cargo:version" -d "$(cargo --version)" --keep-name-section
         - ic-wasm "$ICP_WASM_OUTPUT_PATH" -o "${ICP_WASM_OUTPUT_PATH}" metadata "template:type" -d "rust" --keep-name-section
         {{#if candid}}
         - ic-wasm "$ICP_WASM_OUTPUT_PATH" -o "${ICP_WASM_OUTPUT_PATH}" metadata "candid:service" -f '{{ candid }}' -v public --keep-name-section
         {{else}}
-        - command -v candid-extractor >/dev/null 2>&1 || { echo >&2 'candid-extractor not found. Run `cargo install candid-extractor` to install it.'; exit 1; }
         - did="$(mktemp)"; candid-extractor "$ICP_WASM_OUTPUT_PATH" >"$did" && ic-wasm "$ICP_WASM_OUTPUT_PATH" -o "${ICP_WASM_OUTPUT_PATH}" metadata "candid:service" -f "$did" -v public --keep-name-section
         {{/if}}
         {{#if metadata}}
@@ -32,7 +40,6 @@ build:
     {{#if shrink}}
     - type: script
       commands:
-        - command -v ic-wasm >/dev/null 2>&1 || { echo >&2 "ic-wasm not found. To install ic-wasm, see https://github.com/dfinity/ic-wasm \n"; exit 1; }
         - ic-wasm "$ICP_WASM_OUTPUT_PATH" -o "${ICP_WASM_OUTPUT_PATH}" shrink --keep-name-section
     {{/if}}
 

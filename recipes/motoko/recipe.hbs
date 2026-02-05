@@ -8,14 +8,21 @@
 
 build:
   steps:
+    # Check that required commands exist
     - type: script
       commands:
         - sh -c 'command -v mops >/dev/null 2>&1 || { echo >&2 "'mops' not found on path. To install Mops, see https://mops.one/docs/install.\n"; exit 1; }'
+        - command -v ic-wasm >/dev/null 2>&1 || { echo >&2 "ic-wasm not found. To install ic-wasm, see https://github.com/dfinity/ic-wasm \n"; exit 1; }
+        {{#if compress }}
+        - command -v gzip >/dev/null 2>&1 || { echo >&2 "gzip not found. Please install gzip to compress build output. \n"; exit 1; }
+        {{/if}}
+
+    - type: script
+      commands:
         - sh -c '$(mops toolchain bin moc) "{{ main }}" {{#if args}}{{ args }} {{/if}}{{#if candid}}--omit-metadata{{else}}--public-metadata{{/if}} candid:service $(mops sources) -o "$ICP_WASM_OUTPUT_PATH"'
 
     - type: script
       commands:
-        - command -v ic-wasm >/dev/null 2>&1 || { echo >&2 "ic-wasm not found. To install ic-wasm, see https://github.com/dfinity/ic-wasm \n"; exit 1; }
         - sh -c 'ic-wasm "$ICP_WASM_OUTPUT_PATH" -o "${ICP_WASM_OUTPUT_PATH}" metadata "moc:version" -d "$($(mops toolchain bin moc) --version)" --keep-name-section'
 
     - type: script
@@ -33,14 +40,12 @@ build:
     {{#if shrink}}
     - type: script
       commands:
-        - command -v ic-wasm >/dev/null 2>&1 || { echo >&2 "ic-wasm not found. To install ic-wasm, see https://github.com/dfinity/ic-wasm \n"; exit 1; }
         - ic-wasm "$ICP_WASM_OUTPUT_PATH" -o "${ICP_WASM_OUTPUT_PATH}" shrink --keep-name-section
     {{/if}}
 
     {{#if compress }}
     - type: script
       commands:
-        - command -v gzip >/dev/null 2>&1 || { echo >&2 "gzip not found. Please install gzip to compress build output. \n"; exit 1; }
         - gzip --no-name "$ICP_WASM_OUTPUT_PATH"
         - mv "${ICP_WASM_OUTPUT_PATH}.gz" "$ICP_WASM_OUTPUT_PATH"
     {{/if}}
