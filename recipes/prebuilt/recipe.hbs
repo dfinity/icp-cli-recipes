@@ -1,6 +1,8 @@
 {{! A recipe for deploying a pre-built canister }}
 {{! `path: string` path to the wasm }}
 {{! `sha256: string` Optional, the hash of the wasm to deploy}}
+{{! `shrink: boolean` Optimizes the wasm with ic-wasm }}
+{{! `compress: boolean` determines whether the wasm should be gzipped }}
 {{! `metadata: [name: string, value: string]`: An array of name/value pairs that get injected into the wasm metadata section }}
 
 build:
@@ -20,5 +22,20 @@ build:
         - command -v ic-wasm >/dev/null 2>&1 || { echo >&2 "ic-wasm not found. To install ic-wasm, see https://github.com/dfinity/ic-wasm \n"; exit 1; }
         - ic-wasm "$ICP_WASM_OUTPUT_PATH" -o "${ICP_WASM_OUTPUT_PATH}" metadata "{{ name }}" -d "{{ value }}" --keep-name-section
         {{/each}}
+    {{/if}}
+
+    {{#if shrink}}
+    - type: script
+      commands:
+        - command -v ic-wasm >/dev/null 2>&1 || { echo >&2 "ic-wasm not found. To install ic-wasm, see https://github.com/dfinity/ic-wasm \n"; exit 1; }
+        - ic-wasm "$ICP_WASM_OUTPUT_PATH" -o "${ICP_WASM_OUTPUT_PATH}" shrink --keep-name-section
+    {{/if}}
+
+    {{#if compress}}
+    - type: script
+      commands:
+        - command -v gzip >/dev/null 2>&1 || { echo >&2 "gzip not found. Please install gzip to compress build output. \n"; exit 1; }
+        - gzip --no-name "$ICP_WASM_OUTPUT_PATH"
+        - mv "${ICP_WASM_OUTPUT_PATH}.gz" "$ICP_WASM_OUTPUT_PATH"
     {{/if}}
 

@@ -1,8 +1,9 @@
 {{! A recipe for building a Motoko canister }}
 {{! `main: string` Motoko file which contains the main actor }}
 {{! `args: string` Additional arguments to pass to the moc compiler }}
+{{! `candid: string` Optional, the path to the Candid interface file }}
 {{! `shrink: boolean` Optimizes the wasm with ic-wasm }}
-{{! `compressed: boolean` determins whether the was should be gzipped }}
+{{! `compress: boolean` determines whether the wasm should be gzipped }}
 {{! `metadata: [name: string, value: string]`: An array of name/value pairs that get injected into the wasm metadata section }}
 
 build:
@@ -10,7 +11,7 @@ build:
     - type: script
       commands:
         - sh -c 'command -v mops >/dev/null 2>&1 || { echo >&2 "'mops' not found on path. To install Mops, see https://mops.one/docs/install.\n"; exit 1; }'
-        - sh -c '$(mops toolchain bin moc) "{{ main }}" {{ args }} {{#if candid}}--omit-metadata{{else}}--public-metadata{{/if}} candid:service $(mops sources) -o "$ICP_WASM_OUTPUT_PATH"'
+        - sh -c '$(mops toolchain bin moc) "{{ main }}" {{#if args}}{{ args }} {{/if}}{{#if candid}}--omit-metadata{{else}}--public-metadata{{/if}} candid:service $(mops sources) -o "$ICP_WASM_OUTPUT_PATH"'
 
     - type: script
       commands:
