@@ -20,13 +20,13 @@ Official build recipe templates for Internet Computer (ICP) canisters. Recipes p
 Reference a recipe in your `icp.yaml` file:
 
 ```yaml
-canister:
-  name: backend
-  recipe:
-    type: "@dfinity/rust"
-    configuration:
-      package: my-canister
-      shrink: true
+canisters:
+  - name: backend
+    recipe:
+      type: "@dfinity/rust"
+      configuration:
+        package: my-canister
+        shrink: true
 ```
 
 ### Recipe Naming Convention
@@ -42,12 +42,12 @@ Recipes follow the `@dfinity/<recipe-name>` naming pattern:
 To pin to a specific recipe version, append `@<version>` to the recipe type:
 
 ```yaml
-canister:
-  name: backend
-  recipe:
-    type: "@dfinity/rust@v3.0.0"
-    configuration:
-      package: my-canister
+canisters:
+  - name: backend
+    recipe:
+      type: "@dfinity/rust@v3.0.0"
+      configuration:
+        package: my-canister
 ```
 
 Without a version specified, the latest stable version is used. View available versions in the [releases page](https://github.com/dfinity/icp-cli-recipes/releases).

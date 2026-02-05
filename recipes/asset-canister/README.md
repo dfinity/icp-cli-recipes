@@ -7,61 +7,63 @@ Download and configure the official IC assets canister with asset synchronizatio
 Example of how to reference this recipe in an `icp.yaml` file:
 
 ```yaml
-canister:
-  name: frontend
-  recipe:
-    type: "@dfinity/asset-canister"
-    configuration:
-      version: 0.30.2
-      dir: dist
+canisters:
+  - name: frontend
+    recipe:
+      type: "@dfinity/asset-canister"
+      configuration:
+        version: 0.30.2
+        dir: dist
 ```
 
 ## Configuration Parameters
 
 | Parameter | Type | Required | Description | Default |
 |-----------|------|----------|-------------|---------|
-| version | string | No | SDK version tag to download assets canister from | latest |
-| dir | string | Yes | Directory containing frontend assets to synchronize | - |
-| build | array | No | Commands to build the frontend assets | [] |
-| metadata | array | No | Array of key-value pairs for custom metadata | [] |
+| version | string | No | SDK version tag to download the assets canister from (e.g., `0.30.2`) | latest |
+| dir | string | Yes | Directory containing frontend assets to synchronize to the canister | - |
+| build | array | No | Shell commands to build the frontend assets before deployment (e.g., `npm run build`) | [] |
+| metadata | array | No | Array of key-value pairs for custom metadata to inject into the WASM | [] |
 
 ## Prerequisites
 
-- `ic-wasm` tool must be installed for metadata injection and optimization
-- Frontend assets must either exist in the specified directory or be built using provided commands
+- Frontend assets must either exist in the specified directory or be built using provided `build` commands
 - Internet connection required to download the assets canister WASM
+- `ic-wasm` (included with icp-cli installation) - only required if using `metadata` option
+
+> **Note:** If you followed the [icp-cli installation guide](https://github.com/dfinity/icp-cli#installation), `ic-wasm` is already installed.
 
 ## Examples
 
 ### Basic Example
 
 ```yaml
-canister:
-  name: website
-  recipe:
-    type: "@dfinity/asset-canister"
-    configuration:
-      dir: build
+canisters:
+  - name: website
+    recipe:
+      type: "@dfinity/asset-canister"
+      configuration:
+        dir: build
 ```
 
 ### Advanced Example
 
 ```yaml
-canister:
-  name: spa-frontend
-  recipe:
-    type: "@dfinity/asset-canister"
-    configuration:
-      version: 0.30.2
-      build:
-        - npm install
-        - npm run build
-      dir: dist
-      metadata:
-        - name: "frontend:framework"
-          value: "react"
-        - name: "frontend:version"
-          value: "1.0.0"
+canisters:
+  - name: spa-frontend
+    recipe:
+      type: "@dfinity/asset-canister"
+      configuration:
+        version: 0.30.2
+        build:
+          - npm install
+          - npm run build
+        dir: dist
+        metadata:
+          - name: "frontend:framework"
+            value: "react"
+          - name: "frontend:version"
+            value: "1.0.0"
 ```
 
 ## Build Process
