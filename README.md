@@ -23,7 +23,7 @@ Reference a recipe in your `icp.yaml` file:
 canisters:
   - name: backend
     recipe:
-      type: "@dfinity/rust"
+      type: "@dfinity/rust@v3.0.0"
       configuration:
         package: my-canister
         shrink: true
@@ -31,7 +31,7 @@ canisters:
 
 ### Recipe Naming Convention
 
-Recipes follow the `@dfinity/<recipe-name>` naming pattern:
+Recipes follow the `@dfinity/<recipe-name>@<version>` naming pattern:
 - `@dfinity/rust` - Rust canister recipe
 - `@dfinity/motoko` - Motoko canister recipe
 - `@dfinity/pre-built` - Pre-built WASM recipe
@@ -39,7 +39,7 @@ Recipes follow the `@dfinity/<recipe-name>` naming pattern:
 
 ### Using Specific Versions
 
-To pin to a specific recipe version, append `@<version>` to the recipe type:
+After release 0.1.1 of `icp-cli` you are required to append `@<version>` to the recipe type:
 
 ```yaml
 canisters:
@@ -50,7 +50,17 @@ canisters:
         package: my-canister
 ```
 
-Without a version specified, the latest stable version is used. View available versions in the [releases page](https://github.com/dfinity/icp-cli-recipes/releases).
+For security reasons, you can also add a sha256 to verify the integrity of the template:
+
+```yaml
+canisters:
+  - name: backend
+    recipe:
+      type: "@dfinity/rust@v3.0.0"
+      sha256: 620151f0c07efc1e8a986f73b85406b78bea09a92fc899f299a431431a6a6819
+      configuration:
+        package: my-canister
+```
 
 ## Releases
 
