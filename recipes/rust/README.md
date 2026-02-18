@@ -10,11 +10,13 @@ Example of how to reference this recipe in an `icp.yaml` file:
 canisters:
   - name: backend
     recipe:
-      type: "@dfinity/rust"
+      type: "@dfinity/rust@<version>"
       configuration:
         package: my-canister
         shrink: true
 ```
+
+> Replace `<version>` with a release version (e.g. `v3.0.0`). See [available versions](https://github.com/dfinity/icp-cli-recipes/releases?q=rust&expanded=true).
 
 ## Configuration Parameters
 
@@ -53,7 +55,7 @@ cargo install candid-extractor
 canisters:
   - name: hello-rust
     recipe:
-      type: "@dfinity/rust"
+      type: "@dfinity/rust@<version>"
       configuration:
         package: hello-rust
 ```
@@ -64,7 +66,7 @@ canisters:
 canisters:
   - name: dapp-backend
     recipe:
-      type: "@dfinity/rust"
+      type: "@dfinity/rust@<version>"
       configuration:
         package: dapp-backend
         shrink: true

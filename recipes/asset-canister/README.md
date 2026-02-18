@@ -10,17 +10,19 @@ Example of how to reference this recipe in an `icp.yaml` file:
 canisters:
   - name: frontend
     recipe:
-      type: "@dfinity/asset-canister"
+      type: "@dfinity/asset-canister@<version>"
       configuration:
         version: 0.30.2
         dir: dist
 ```
 
+> Replace `<version>` with a release version (e.g. `v2.1.0`). See [available versions](https://github.com/dfinity/icp-cli-recipes/releases?q=asset-canister&expanded=true).
+
 ## Configuration Parameters
 
 | Parameter | Type | Required | Description | Default |
 |-----------|------|----------|-------------|---------|
-| version | string | No | SDK version tag to download the assets canister from (e.g., `0.30.2`) | latest |
+| version | string | No | SDK version tag to download the asset canister from (e.g., `0.30.2`) | latest |
 | dir | string | Yes | Directory containing frontend assets to synchronize to the canister | - |
 | build | array | No | Shell commands to build the frontend assets before deployment (e.g., `npm run build`) | [] |
 | metadata | array | No | Array of key-value pairs for custom metadata to inject into the WASM | [] |
@@ -41,7 +43,7 @@ canisters:
 canisters:
   - name: website
     recipe:
-      type: "@dfinity/asset-canister"
+      type: "@dfinity/asset-canister@<version>"
       configuration:
         dir: build
 ```
@@ -52,7 +54,7 @@ canisters:
 canisters:
   - name: spa-frontend
     recipe:
-      type: "@dfinity/asset-canister"
+      type: "@dfinity/asset-canister@<version>"
       configuration:
         version: 0.30.2
         build:
