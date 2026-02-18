@@ -10,11 +10,13 @@ Example of how to reference this recipe in an `icp.yaml` file:
 canisters:
   - name: backend
     recipe:
-      type: "@dfinity/motoko"
+      type: "@dfinity/motoko@<version>"
       configuration:
         main: src/main.mo
         shrink: true
 ```
+
+> Replace `<version>` with a release version (e.g. `v4.0.0`). See [available versions](https://github.com/dfinity/icp-cli-recipes/releases?q=motoko&expanded=true).
 
 ## Configuration Parameters
 
@@ -46,7 +48,7 @@ If mops is not installed, see: <https://mops.one/docs/install>
 canisters:
   - name: hello-world
     recipe:
-      type: "@dfinity/motoko"
+      type: "@dfinity/motoko@<version>"
       configuration:
         main: src/main.mo
 ```
@@ -57,7 +59,7 @@ canisters:
 canisters:
   - name: complex-backend
     recipe:
-      type: "@dfinity/motoko"
+      type: "@dfinity/motoko@<version>"
       configuration:
         main: src/backend.mo
         args: --incremental-gc

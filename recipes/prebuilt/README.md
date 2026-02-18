@@ -10,7 +10,7 @@ Example of how to reference this recipe in an `icp.yaml` file:
 canisters:
   - name: my-canister
     recipe:
-      type: "@dfinity/prebuilt"
+      type: "@dfinity/prebuilt@<version>"
       configuration:
         path: dist/canister.wasm
         sha256: 17a05e36278cd04c7ae6d3d3226c136267b9df7525a0657521405e22ec96be7a
@@ -20,6 +20,8 @@ canisters:
           - name: "custom:version"
             value: "1.0.0"
 ```
+
+> Replace `<version>` with a release version (e.g. `v2.0.0`). See [available versions](https://github.com/dfinity/icp-cli-recipes/releases?q=prebuilt&expanded=true).
 
 ## Configuration Parameters
 
@@ -48,7 +50,7 @@ canisters:
 canisters:
   - name: simple-canister
     recipe:
-      type: "@dfinity/prebuilt"
+      type: "@dfinity/prebuilt@<version>"
       configuration:
         path: target/wasm32-unknown-unknown/release/my_canister.wasm
         sha256: abc123def456...
@@ -60,7 +62,7 @@ canisters:
 canisters:
   - name: optimized-canister
     recipe:
-      type: "@dfinity/prebuilt"
+      type: "@dfinity/prebuilt@<version>"
       configuration:
         path: dist/production-canister.wasm
         sha256: xyz789abc123...

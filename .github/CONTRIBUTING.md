@@ -99,11 +99,6 @@ To create a new release for a recipe:
 
 2. **The workflow automatically**:
    - Creates a GitHub release for `rust-v4.0.0` with changelog and release artifacts
-   - Updates the `rust-latest` tag to point to the same commit as `rust-v4.0.0`
-   - Creates/updates the `rust-latest` release with:
-     - The same changelog as `rust-v4.0.0`
-     - The same release artifacts (but named with "latest")
-     - A fresh timestamp showing when it was updated
 
 ### Release Naming Convention
 
@@ -119,23 +114,6 @@ Release notes are automatically generated and include:
 - All commits affecting the specific recipe directory since the previous version
 - A link to the full changelog comparing the two versions
 - Release artifacts (tar.gz, zip files, checksums)
-
-### What is the `-latest` Release?
-
-Each recipe has two types of releases:
-
-1. **Versioned releases** (e.g., `rust-v4.0.0`):
-   - Permanent, immutable releases
-   - Pin to specific versions for stability
-   - Example: `rust-v4.0.0`, `rust-v3.0.0`, etc.
-
-2. **Latest release** (e.g., `rust-latest`):
-   - Always points to the most recent version
-   - Updated automatically when a new version is released
-   - Same content as the newest versioned release, but with:
-     - Updated timestamp
-     - "latest" naming for artifacts
-   - Use this to always get the newest recipe version
 
 ### Viewing Releases
 

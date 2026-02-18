@@ -32,10 +32,10 @@ canisters:
 ### Recipe Naming Convention
 
 Recipes follow the `@dfinity/<recipe-name>@<version>` naming pattern:
-- `@dfinity/rust` - Rust canister recipe
-- `@dfinity/motoko` - Motoko canister recipe
-- `@dfinity/pre-built` - Pre-built WASM recipe
-- `@dfinity/asset-canister` - Asset canister recipe
+- `@dfinity/rust@<version>` - Rust canister recipe
+- `@dfinity/motoko@<version>` - Motoko canister recipe
+- `@dfinity/pre-built@<version>` - Pre-built WASM recipe
+- `@dfinity/asset-canister@<version>` - Asset canister recipe
 
 ### Using Specific Versions
 
