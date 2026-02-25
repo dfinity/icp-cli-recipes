@@ -23,6 +23,7 @@ canisters:
 | Parameter | Type    | Required | Description                                  | Default                   |
 |-----------|---------|----------|----------------------------------------------|---------------------------|
 | package   | string  | Yes      | Name of the Rust package to build            | -                         |
+| locked    | boolean | No       | Use exact dependency versions from `Cargo.lock` (passes `--locked` to Cargo) | false                     |
 | candid    | string  | No       | Path to a custom Candid interface file. If not provided, the interface is auto-extracted from the WASM using `candid-extractor` | (auto-extracted) |
 | metadata  | array   | No       | Array of key-value pairs for custom metadata | []                        |
 | shrink    | boolean | No       | Remove unused functions and debug info to reduce file size | false                     |
@@ -82,7 +83,7 @@ canisters:
 
 When this recipe is executed:
 
-1. Runs `cargo build` with the specified package for the `wasm32-unknown-unknown` target in release mode
+1. Runs `cargo build` with the specified package for the `wasm32-unknown-unknown` target in release mode (with `--locked` if enabled)
 2. Moves the resulting WASM file from the Cargo target directory to the output location
 3. Handles package name conversion (hyphens to underscores for the WASM filename)
 4. Injects Cargo version metadata ("cargo:version")
