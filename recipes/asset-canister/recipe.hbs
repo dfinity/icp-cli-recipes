@@ -19,13 +19,13 @@ build:
     - type: script
       commands:
         {{#each build}}
-        - {{ this }}
+        - {{{ this }}}
         {{/each}}
     {{/if}}
 
     - type: pre-built
       {{#if version}}
-      url: https://github.com/dfinity/sdk/releases/download/{{ version }}/assetstorage.wasm.gz
+      url: https://github.com/dfinity/sdk/releases/download/{{{ version }}}/assetstorage.wasm.gz
       {{else}}
       url: https://github.com/dfinity/sdk/releases/latest/download/assetstorage.wasm.gz
       {{/if}}
@@ -34,7 +34,7 @@ build:
     - type: script
       commands:
         {{#each metadata}}
-        - sh -c 'ic-wasm "$ICP_WASM_OUTPUT_PATH" -o "${ICP_WASM_OUTPUT_PATH}" metadata "{{ name }}" -d "{{ value }}" --keep-name-section'
+        - sh -c 'ic-wasm "$ICP_WASM_OUTPUT_PATH" -o "${ICP_WASM_OUTPUT_PATH}" metadata "{{{ name }}}" -d "{{{ value }}}" --keep-name-section'
         {{/each}}
     {{/if}}
 
@@ -42,4 +42,4 @@ build:
 sync:
   steps:
     - type: assets
-      dir: {{ dir }}
+      dir: {{{ dir }}}

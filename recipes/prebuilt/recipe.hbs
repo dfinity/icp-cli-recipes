@@ -23,16 +23,16 @@ build:
         {{/if}}
 
     - type: pre-built
-      path: {{ path }}
+      path: {{{ path }}}
       {{#if sha256 }}
-      sha256: {{ sha256 }}
+      sha256: {{{ sha256 }}}
       {{/if}}
 
     {{#if metadata}}
     - type: script
       commands:
         {{#each metadata}}
-        - ic-wasm "$ICP_WASM_OUTPUT_PATH" -o "${ICP_WASM_OUTPUT_PATH}" metadata "{{ name }}" -d "{{ value }}" --keep-name-section
+        - ic-wasm "$ICP_WASM_OUTPUT_PATH" -o "${ICP_WASM_OUTPUT_PATH}" metadata "{{{ name }}}" -d "{{{ value }}}" --keep-name-section
         {{/each}}
     {{/if}}
 

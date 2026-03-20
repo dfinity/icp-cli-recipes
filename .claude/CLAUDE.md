@@ -30,7 +30,7 @@ build:
   steps:
     - type: script
       commands:
-        - command using {{ param }}
+        - command using {{{ param }}}
 
     {{#if optional_param}}
     - type: script
@@ -41,10 +41,14 @@ build:
 
 ## Key Patterns
 
+### Triple-Brace Interpolation
+
+Always use triple-braces `{{{ param }}}` for value interpolation. Handlebars double-braces `{{ param }}` HTML-escape the output (e.g. `&&` becomes `&amp;&amp;`), which breaks shell commands and is never correct in YAML/shell context.
+
 ### Required vs Optional Parameters
 
-- **Required parameters**: Used directly as `{{ param }}` - will cause strict mode error if missing
-- **Optional parameters**: Wrapped in conditionals `{{#if param}}{{ param }}{{/if}}`
+- **Required parameters**: Used directly as `{{{ param }}}` - will cause strict mode error if missing
+- **Optional parameters**: Wrapped in conditionals `{{#if param}}{{{ param }}}{{/if}}`
 
 ### Common Configuration Options
 
