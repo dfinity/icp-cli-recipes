@@ -77,7 +77,7 @@ canisters:
 When this recipe is executed:
 
 1. Checks if `mops` is installed (used for Motoko toolchain management)
-2. Compiles the specified Motoko entry file using `moc` via `mops toolchain`
+2. Compiles the specified Motoko entry file using `moc` via `mops toolchain`, including any global compiler flags defined in the `[moc]` section of `mops.toml` (via `mops moc-args`)
 3. Handles Candid interface: auto-generates from Motoko source, or uses the provided `candid` file
 4. Injects compiler version metadata ("moc:version")
 5. Injects template type metadata ("template:type" = "motoko")

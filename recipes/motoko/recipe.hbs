@@ -19,7 +19,7 @@ build:
 
     - type: script
       commands:
-        - sh -c '$(mops toolchain bin moc) "{{ main }}" {{#if args}}{{ args }} {{/if}}{{#if candid}}--omit-metadata{{else}}--public-metadata{{/if}} candid:service $(mops sources) -o "$ICP_WASM_OUTPUT_PATH"'
+        - sh -c '$(mops toolchain bin moc) "{{ main }}" {{#if args}}{{ args }} {{/if}}$(mops moc-args) {{#if candid}}--omit-metadata{{else}}--public-metadata{{/if}} candid:service $(mops sources) -o "$ICP_WASM_OUTPUT_PATH"'
 
     - type: script
       commands:
