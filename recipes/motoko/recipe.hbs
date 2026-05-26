@@ -17,7 +17,8 @@ build:
 
     - type: script
       commands:
-        - sh -c 'BUILD_OUT=$(mktemp -d) && mops build "{{ name }}" --output "$BUILD_OUT" && cp "$BUILD_OUT/{{ name }}.wasm" "$ICP_WASM_OUTPUT_PATH"'
+        - mops build "{{ name }}" --output .mops/.build
+        - cp ".mops/.build/{{ name }}.wasm" "$ICP_WASM_OUTPUT_PATH"
 
     - type: script
       commands:
