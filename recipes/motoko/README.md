@@ -12,13 +12,12 @@ canisters:
     recipe:
       type: "@dfinity/motoko@<version>"
       configuration:
-        name: backend
         shrink: true
 ```
 
 > Replace `<version>` with a release version (e.g. `v5.0.0`). See [available versions](https://github.com/dfinity/icp-cli-recipes/releases?q=motoko&expanded=true).
 
-The canister must also be defined in `mops.toml`. The `name` in the recipe configuration must match the key in the `[canisters]` section:
+The canister must also be defined in `mops.toml`. The key in the `[canisters]` section must match the canister name in `icp.yaml`:
 
 ```toml
 [toolchain]
@@ -34,7 +33,6 @@ Compiler flags, per-canister args, and the Candid file are all configured in `mo
 
 | Parameter | Type    | Required | Description                                  | Default |
 |-----------|---------|----------|----------------------------------------------|---------|
-| name      | string  | Yes      | Canister name — must match the key in `[canisters]` in `mops.toml` | |
 | metadata  | array   | No       | Array of key-value pairs for custom metadata | []      |
 | shrink    | boolean | No       | Remove unused functions and debug info to reduce file size | false   |
 | compress  | boolean | No       | Gzip compress the WASM file                  | false   |
@@ -60,8 +58,6 @@ canisters:
   - name: hello-world
     recipe:
       type: "@dfinity/motoko@<version>"
-      configuration:
-        name: hello-world
 ```
 
 ```toml
@@ -82,7 +78,6 @@ canisters:
     recipe:
       type: "@dfinity/motoko@<version>"
       configuration:
-        name: backend
         shrink: true
         compress: true
         metadata:
@@ -144,7 +139,7 @@ The `main`, `candid`, and `args` recipe parameters have been removed. Move them 
 | `candid: backend.did`       | `[canisters.backend] candid = "backend.did"` |
 | `args: --incremental-gc`    | `[canisters.backend] args = ["--incremental-gc"]` |
 
-Add a `name` parameter to the recipe configuration matching your canister's key in `[canisters]`.
+The canister name in `icp.yaml` is used automatically — no additional recipe configuration is needed.
 
 ## Common Issues
 

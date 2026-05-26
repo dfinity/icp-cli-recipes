@@ -1,5 +1,4 @@
 {{! A recipe for building a Motoko canister using `mops build` }}
-{{! `name: string` The canister name, must match the key in [canisters] in mops.toml }}
 {{! `shrink: boolean` Optimizes the wasm with ic-wasm }}
 {{! `compress: boolean` determines whether the wasm should be gzipped }}
 {{! `metadata: [name: string, value: string]`: An array of name/value pairs that get injected into the wasm metadata section }}
@@ -17,8 +16,8 @@ build:
 
     - type: script
       commands:
-        - mops build "{{ name }}" --output .mops/.build
-        - cp ".mops/.build/{{ name }}.wasm" "$ICP_WASM_OUTPUT_PATH"
+        - mops build "{{ _.canister.name }}" --output .mops/.build
+        - cp ".mops/.build/{{ _.canister.name }}.wasm" "$ICP_WASM_OUTPUT_PATH"
 
     - type: script
       commands:
