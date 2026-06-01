@@ -8,13 +8,14 @@ Example of how to reference this recipe in an `icp.yaml` file:
 
 ```yaml
 canisters:
-  - name: backend
+  - name: my-canister
     recipe:
       type: "@dfinity/rust@<version>"
       configuration:
-        package: my-canister
         shrink: true
 ```
+
+The canister `name` in `icp.yaml` must match the `[package] name` in `Cargo.toml`.
 
 > Replace `<version>` with a release version (e.g. `v3.0.0`). See [available versions](https://github.com/dfinity/icp-cli-recipes/releases?q=rust&expanded=true).
 
@@ -22,7 +23,6 @@ canisters:
 
 | Parameter | Type    | Required | Description                                  | Default                   |
 |-----------|---------|----------|----------------------------------------------|---------------------------|
-| package   | string  | Yes      | Name of the Rust package to build            | -                         |
 | locked    | boolean | No       | Use exact dependency versions from `Cargo.lock` (passes `--locked` to Cargo) | false                     |
 | candid    | string  | No       | Path to a custom Candid interface file. If not provided, the interface is auto-extracted from the WASM using `candid-extractor` | (auto-extracted) |
 | metadata  | array   | No       | Array of key-value pairs for custom metadata | []                        |
@@ -57,8 +57,6 @@ canisters:
   - name: hello-rust
     recipe:
       type: "@dfinity/rust@<version>"
-      configuration:
-        package: hello-rust
 ```
 
 ### Advanced Example
@@ -69,7 +67,6 @@ canisters:
     recipe:
       type: "@dfinity/rust@<version>"
       configuration:
-        package: dapp-backend
         shrink: true
         compress: true
         metadata:
@@ -135,7 +132,7 @@ serde = { version = "1.0", features = ["derive"] }
 ### Issue 2
 
 **Problem**: Package not found during build
-**Solution**: Verify the package name matches exactly with the name in your `Cargo.toml` file
+**Solution**: Verify the canister `name` in `icp.yaml` matches the `[package] name` in `Cargo.toml` exactly
 
 ### Issue 3
 
