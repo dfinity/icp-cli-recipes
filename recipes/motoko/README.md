@@ -99,7 +99,6 @@ args = ["--default-persistent-actors"]
 [canisters.backend]
 main = "src/main.mo"
 candid = "backend.did"
-args = ["--incremental-gc"]
 ```
 
 ## Build Process
