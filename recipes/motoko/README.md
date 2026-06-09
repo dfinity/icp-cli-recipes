@@ -21,7 +21,7 @@ The canister must also be defined in `mops.toml`. The key in the `[canisters]` s
 
 ```toml
 [toolchain]
-moc = "1.8.2"
+moc = "1.9.0"
 
 [canisters]
 backend = "src/main.mo"
@@ -42,7 +42,7 @@ Compiler flags, per-canister args, and the Candid file are all configured in `mo
 - `mops` (Motoko package manager) — manages the toolchain, dependencies, and canister build
 - `ic-wasm` (included with icp-cli installation)
 
-> **Note:** If you followed the [icp-cli installation guide](https://github.com/dfinity/icp-cli#installation), both `mops` and `ic-wasm` are already installed.
+> **Note:** If you followed the [icp-cli installation guide](https://cli.internetcomputer.org/0.3/guides/installation), both `mops` and `ic-wasm` are already installed.
 
 ### Additional Installation
 
@@ -63,7 +63,7 @@ canisters:
 ```toml
 # mops.toml
 [toolchain]
-moc = "1.8.2"
+moc = "1.9.0"
 
 [canisters]
 hello-world = "src/main.mo"
@@ -88,7 +88,7 @@ canisters:
 ```toml
 # mops.toml
 [toolchain]
-moc = "1.8.2"
+moc = "1.9.0"
 
 [dependencies]
 core = "2.5.0"
@@ -136,7 +136,7 @@ The `main`, `candid`, and `args` recipe parameters have been removed. Move them 
 |-----------------------------|--------------------------------------------|
 | `main: src/main.mo`         | `[canisters.backend] main = "src/main.mo"` |
 | `candid: backend.did`       | `[canisters.backend] candid = "backend.did"` |
-| `args: --incremental-gc`    | `[canisters.backend] args = ["--incremental-gc"]` |
+| `args: --default-persistent-actors` | `[canisters.backend] args = ["--default-persistent-actors"]` |
 
 The canister name in `icp.yaml` is used automatically — no additional recipe configuration is needed.
 
