@@ -2,6 +2,9 @@
 
 Download and configure the official IC assets canister with asset synchronization capabilities.
 
+> [!IMPORTANT]
+> Version `v2.2.0` and later of this recipe require **icp-cli v0.2.7 or later**.
+
 ## Usage
 
 Example of how to reference this recipe in an `icp.yaml` file:
