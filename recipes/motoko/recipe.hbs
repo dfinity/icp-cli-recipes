@@ -1,7 +1,4 @@
-{{! A recipe for building a Motoko canister }}
-{{! `main: string` Motoko file which contains the main actor }}
-{{! `args: string` Additional arguments to pass to the moc compiler }}
-{{! `candid: string` Optional, the path to the Candid interface file }}
+{{! A recipe for building a Motoko canister using `mops build` }}
 {{! `shrink: boolean` Optimizes the wasm with ic-wasm }}
 {{! `compress: boolean` determines whether the wasm should be gzipped }}
 {{! `metadata: [name: string, value: string]`: An array of name/value pairs that get injected into the wasm metadata section }}
@@ -19,7 +16,8 @@ build:
 
     - type: script
       commands:
-        - sh -c '$(mops toolchain bin moc) "{{ main }}" {{#if args}}{{ args }} {{/if}}{{#if candid}}--omit-metadata{{else}}--public-metadata{{/if}} candid:service $(mops sources) -o "$ICP_WASM_OUTPUT_PATH"'
+        - mops build "{{ _.canister.name }}" --output .mops/.build
+        - cp ".mops/.build/{{ _.canister.name }}.wasm" "$ICP_WASM_OUTPUT_PATH"
 
     - type: script
       commands:
@@ -28,9 +26,6 @@ build:
     - type: script
       commands:
         - ic-wasm "$ICP_WASM_OUTPUT_PATH" -o "${ICP_WASM_OUTPUT_PATH}" metadata "template:type" -d "motoko" --keep-name-section
-        {{#if candid}}
-        - ic-wasm "$ICP_WASM_OUTPUT_PATH" -o "${ICP_WASM_OUTPUT_PATH}" metadata "candid:service" -f '{{ candid }}' -v public --keep-name-section
-        {{/if}}
         {{#if metadata}}
         {{#each metadata}}
         - ic-wasm "$ICP_WASM_OUTPUT_PATH" -o "${ICP_WASM_OUTPUT_PATH}" metadata "{{ name }}" -d "{{ value }}" --keep-name-section
