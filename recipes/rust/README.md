@@ -64,7 +64,7 @@ canisters:
 
 ```yaml
 canisters:
-  - name: dapp-backend
+  - name: app-backend
     recipe:
       type: "@dfinity/rust@<version>"
       configuration:
