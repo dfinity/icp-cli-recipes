@@ -15,7 +15,7 @@ canisters:
         shrink: true
 ```
 
-The canister `name` in `icp.yaml` must match the `[package] name` in `Cargo.toml`.
+By convention the canister `name` in `icp.yaml` should match the `[package] name` in `Cargo.toml`. If they differ, use the optional `package` parameter to specify the Cargo package name explicitly.
 
 > Replace `<version>` with a release version (e.g. `v3.0.0`). See [available versions](https://github.com/dfinity/icp-cli-recipes/releases?q=rust&expanded=true).
 
@@ -23,6 +23,7 @@ The canister `name` in `icp.yaml` must match the `[package] name` in `Cargo.toml
 
 | Parameter | Type    | Required | Description                                  | Default                   |
 |-----------|---------|----------|----------------------------------------------|---------------------------|
+| package   | string  | No       | Cargo package name to build. Defaults to the canister name in `icp.yaml` | (canister name) |
 | locked    | boolean | No       | Use exact dependency versions from `Cargo.lock` (passes `--locked` to Cargo) | false                     |
 | candid    | string  | No       | Path to a custom Candid interface file. If not provided, the interface is auto-extracted from the WASM using `candid-extractor` | (auto-extracted) |
 | metadata  | array   | No       | Array of key-value pairs for custom metadata | []                        |
@@ -74,6 +75,19 @@ canisters:
             value: "1.0.0"
           - name: "build:profile"
             value: "release"
+```
+
+### Workspace Example
+
+Use `package` when the Cargo package name differs from the canister name (e.g. in a workspace):
+
+```yaml
+canisters:
+  - name: backend
+    recipe:
+      type: "@dfinity/rust@<version>"
+      configuration:
+        package: my-project-backend
 ```
 
 ## Build Process
@@ -132,7 +146,7 @@ serde = { version = "1.0", features = ["derive"] }
 ### Issue 2
 
 **Problem**: Package not found during build
-**Solution**: Verify the canister `name` in `icp.yaml` matches the `[package] name` in `Cargo.toml` exactly
+**Solution**: By default the canister `name` in `icp.yaml` is used as the Cargo package name. If they differ, set the `package` parameter explicitly to match the `[package] name` in `Cargo.toml`
 
 ### Issue 3
 
