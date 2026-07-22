@@ -12,6 +12,7 @@ Official build recipe templates for Internet Computer (ICP) canisters. Recipes p
 | [**Motoko**](recipes/motoko/README.md) | Compile Motoko source code using the moc compiler |
 | [**Pre-built**](recipes/prebuilt/README.md) | Use pre-compiled WASM files with metadata injection |
 | [**Asset Canister**](recipes/asset-canister/README.md) | Deploy the official IC assets canister for frontend apps |
+| [**Static Site**](recipes/static-site/README.md) | Deploy a static frontend to a certified assets canister, with sync handled for you |
 
 ## Quick Start
 
@@ -36,6 +37,7 @@ Recipes follow the `@dfinity/<recipe-name>@<version>` naming pattern:
 - `@dfinity/motoko@<version>` - Motoko canister recipe
 - `@dfinity/pre-built@<version>` - Pre-built WASM recipe
 - `@dfinity/asset-canister@<version>` - Asset canister recipe
+- `@dfinity/static-site@<version>` - Static site (certified assets) recipe
 
 ### Using Specific Versions
 
@@ -69,6 +71,7 @@ Each recipe is versioned independently. View release history by recipe type:
 - [Motoko releases](https://github.com/dfinity/icp-cli-recipes/releases?q=motoko&expanded=true)
 - [Pre-built releases](https://github.com/dfinity/icp-cli-recipes/releases?q=prebuilt&expanded=true)
 - [Asset Canister releases](https://github.com/dfinity/icp-cli-recipes/releases?q=asset-canister&expanded=true)
+- [Static Site releases](https://github.com/dfinity/icp-cli-recipes/releases?q=static-site&expanded=true)
 
 Releases follow semantic versioning and include auto-generated changelogs.
 
