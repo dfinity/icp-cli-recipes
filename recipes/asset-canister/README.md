@@ -28,7 +28,7 @@ canisters:
 | version | string | No | SDK version tag to download the asset canister from (e.g., `0.30.2`) | latest |
 | dir | string | Yes | Directory containing frontend assets to synchronize to the canister | - |
 | build | array | No | Shell commands to build the frontend assets before deployment (e.g., `npm run build`) | [] |
-| metadata | array | No | Array of key-value pairs for custom metadata to inject into the WASM | [] |
+| metadata | array | No | Custom wasm metadata entries. Each takes `name`, `value`, and an optional `visibility` of `public` or `private` (omitted means private) | [] |
 
 ## Prerequisites
 
@@ -69,6 +69,9 @@ canisters:
             value: "react"
           - name: "frontend:version"
             value: "1.0.0"
+          - name: "build:commit"
+            value: "a1b2c3d"
+            visibility: public
 ```
 
 ## Build Process

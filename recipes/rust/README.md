@@ -26,7 +26,7 @@ By convention the canister `name` in `icp.yaml` should match the `[package] name
 | package   | string  | No       | Cargo package name to build. Defaults to the canister name in `icp.yaml` | (canister name) |
 | locked    | boolean | No       | Use exact dependency versions from `Cargo.lock` (passes `--locked` to Cargo) | false                     |
 | candid    | string  | No       | Path to a custom Candid interface file. If not provided, the interface is auto-extracted from the WASM using `candid-extractor` | (auto-extracted) |
-| metadata  | array   | No       | Array of key-value pairs for custom metadata | []                        |
+| metadata  | array   | No       | Custom wasm metadata entries. Each takes `name`, `value`, and an optional `visibility` of `public` or `private` (omitted means private) | []                        |
 | shrink    | boolean | No       | Remove unused functions and debug info to reduce file size | false                     |
 | compress  | boolean | No       | Gzip compress the WASM file                  | false                     |
 
@@ -75,6 +75,9 @@ canisters:
             value: "1.0.0"
           - name: "build:profile"
             value: "release"
+          - name: "build:commit"
+            value: "a1b2c3d"
+            visibility: public
 ```
 
 ### Workspace Example

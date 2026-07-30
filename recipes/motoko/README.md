@@ -33,7 +33,7 @@ Compiler flags, per-canister args, and the Candid file are all configured in `mo
 
 | Parameter | Type    | Required | Description                                  | Default |
 |-----------|---------|----------|----------------------------------------------|---------|
-| metadata  | array   | No       | Array of key-value pairs for custom metadata | []      |
+| metadata  | array   | No       | Custom wasm metadata entries. Each takes `name`, `value`, and an optional `visibility` of `public` or `private` (omitted means private) | []      |
 | shrink    | boolean | No       | Remove unused functions and debug info to reduce file size | false   |
 | compress  | boolean | No       | Gzip compress the WASM file                  | false   |
 
@@ -83,6 +83,9 @@ canisters:
         metadata:
           - name: "canister:type"
             value: "backend"
+          - name: "build:commit"
+            value: "a1b2c3d"
+            visibility: public
 ```
 
 ```toml

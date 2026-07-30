@@ -31,7 +31,7 @@ canisters:
 | sha256 | string | No | SHA256 hash for integrity verification. Generate with `sha256sum <file>.wasm` | - |
 | shrink | boolean | No | Remove unused functions and debug info to reduce file size | false |
 | compress | boolean | No | Gzip compress the WASM file | false |
-| metadata | array | No | Array of key-value pairs for custom metadata to inject into the WASM | [] |
+| metadata | array | No | Custom wasm metadata entries. Each takes `name`, `value`, and an optional `visibility` of `public` or `private` (omitted means private) | [] |
 
 ## Prerequisites
 
@@ -73,6 +73,9 @@ canisters:
             value: "2.1.0"
           - name: "build:environment"
             value: "production"
+          - name: "build:commit"
+            value: "a1b2c3d"
+            visibility: public
           - name: "build:timestamp"
             value: "2024-01-01T00:00:00Z"
 ```
