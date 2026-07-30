@@ -1,7 +1,7 @@
 {{! A recipe for building a Motoko canister using `mops build` }}
 {{! `shrink: boolean` Optimizes the wasm with ic-wasm }}
 {{! `compress: boolean` determines whether the wasm should be gzipped }}
-{{! `metadata: [name: string, value: string]`: An array of name/value pairs that get injected into the wasm metadata section }}
+{{! `metadata: [{name: string, value: string, visibility: string}]`: An array of entries that get injected into the wasm metadata section. `visibility` is optional, `public` or `private`; omitted means private, ic-wasm's default }}
 
 build:
   steps:
@@ -28,7 +28,7 @@ build:
         - ic-wasm "$ICP_WASM_OUTPUT_PATH" -o "${ICP_WASM_OUTPUT_PATH}" metadata "template:type" -d "motoko" --keep-name-section
         {{#if metadata}}
         {{#each metadata}}
-        - ic-wasm "$ICP_WASM_OUTPUT_PATH" -o "${ICP_WASM_OUTPUT_PATH}" metadata "{{ name }}" -d "{{ value }}" --keep-name-section
+        - ic-wasm "$ICP_WASM_OUTPUT_PATH" -o "${ICP_WASM_OUTPUT_PATH}" metadata "{{ name }}" -d "{{ value }}"{{#if visibility}} -v {{ visibility }}{{/if}} --keep-name-section
         {{/each}}
         {{/if}}
 
