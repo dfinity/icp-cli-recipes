@@ -19,8 +19,8 @@ build:
         {{/each}}
     {{/if}}
     - type: pre-built
-      url: https://github.com/dfinity/certified-assets/releases/download/v0.3.1/canister-release.wasm.gz
-      sha256: 450ff311b283df72212c76dc36827b530b64c0091eb7982f342df74e378be1b6
+      url: https://github.com/dfinity/certified-assets/releases/download/v0.3.2/canister-release.wasm.gz
+      sha256: eaa83f13c7b5d9aa9e012312556cf32afa66d9b287d3a7da1a9335ae97dedc2b
     {{#if metadata}}
     - type: script
       commands:
@@ -39,7 +39,7 @@ sync:
         {{/each}}
     {{/if}}
     - type: plugin
-      url: https://github.com/dfinity/certified-assets/releases/download/v0.3.1/plugin-release.wasm
-      sha256: af9e780faaf81293f3cae7785095fa5a9c2f3738f0664ad21d7d7480ab04e3bb
+      url: https://github.com/dfinity/certified-assets/releases/download/v0.3.2/plugin-release.wasm
+      sha256: aad9c2e657ee7adb1427438e92efe1092dec0dbd474280d1069bfb648a0aebe6
       dirs:
         - {{ dir }}
