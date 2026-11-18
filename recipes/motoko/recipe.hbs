@@ -1,4 +1,6 @@
 {{! A recipe for building a Motoko canister using `mops build` }}
+{{! `idl: string` Optional, path (relative to the canister directory) where
+    `mops build`'s generated Candid interface (.did) file will be copied. }}
 {{! `shrink: boolean` Optimizes the wasm with ic-wasm }}
 {{! `compress: boolean` determines whether the wasm should be gzipped }}
 {{! `metadata: [{name: string, value: string, visibility: string}]`: An array of entries that get injected into the wasm metadata section. `visibility` is optional, `public` or `private`; omitted means private, ic-wasm's default }}
@@ -18,6 +20,9 @@ build:
       commands:
         - mops build "{{ _.canister.name }}" --output .mops/.build
         - cp ".mops/.build/{{ _.canister.name }}.wasm" "$ICP_WASM_OUTPUT_PATH"
+        {{#if idl}}
+        - sh -c 'mkdir -p "$(dirname "{{ idl }}")" && cp ".mops/.build/{{ _.canister.name }}.did" "{{ idl }}"'
+        {{/if}}
 
     - type: script
       commands:
